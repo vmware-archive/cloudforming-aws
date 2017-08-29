@@ -1044,7 +1044,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-0028197559e906ec0b0ca60a92",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1054,7 +1054,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-0028197559e906ec0b0ca60a92",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1111,7 +1111,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-isoseg0028197559e906ec0b0ca60a91",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer-iso",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1121,7 +1121,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-isoseg0028197559e906ec0b0ca60a91",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer-iso",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1186,12 +1186,21 @@
     "instancei05ae089c8654cb911": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "VolumeSize": "150",
+              "VolumeType": "gp2"
+            }
+          }
+        ],
         "DisableApiTermination": "false",
         "InstanceInitiatedShutdownBehavior": "stop",
         "ImageId": "ami-2e02454e",
         "InstanceType": "m3.large",
         "KernelId": "aki-880531cd",
-        "KeyName": "nick-terraform-ops-manager-key",
+        "KeyName": "nm-dm-cloudformer",
         "Monitoring": "false",
         "Tags": [
           {
