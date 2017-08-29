@@ -1,0 +1,2019 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "zonenickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": "nick-terraform.infrastructure.cf-app.com.",
+        "HostedZoneConfig": {
+          "Comment": "Managed by Terraform"
+        }
+      }
+    },
+    "dns052appsnickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonenickterraforminfrastructurecfappcom"
+        },
+        "RecordSets": [
+          {
+            "Name": "\\052.apps.nick-terraform.infrastructure.cf-app.com.",
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              "nick-terraform-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+            ]
+          }
+        ]
+      }
+    },
+    "dnspcfnickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonenickterraforminfrastructurecfappcom"
+        },
+        "RecordSets": [
+          {
+            "Name": "pcf.nick-terraform.infrastructure.cf-app.com.",
+            "Type": "A",
+            "TTL": "300",
+            "ResourceRecords": [
+              {
+                "Ref": "eip1356649"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "dns052sysnickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonenickterraforminfrastructurecfappcom"
+        },
+        "RecordSets": [
+          {
+            "Name": "\\052.sys.nick-terraform.infrastructure.cf-app.com.",
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              "nick-terraform-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+            ]
+          }
+        ]
+      }
+    },
+    "dnssshsysnickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonenickterraforminfrastructurecfappcom"
+        },
+        "RecordSets": [
+          {
+            "Name": "ssh.sys.nick-terraform.infrastructure.cf-app.com.",
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              "nick-terraform-ssh-elb-1869042241.us-west-1.elb.amazonaws.com"
+            ]
+          }
+        ]
+      }
+    },
+    "dnstcpnickterraforminfrastructurecfappcom": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "zonenickterraforminfrastructurecfappcom"
+        },
+        "RecordSets": [
+          {
+            "Name": "tcp.nick-terraform.infrastructure.cf-app.com.",
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              "nick-terraform-tcp-elb-1786786484.us-west-1.elb.amazonaws.com"
+            ]
+          }
+        ]
+      }
+    },
+    "vpca0115ec4": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-vpc"
+          }
+        ]
+      }
+    },
+    "subnetd13d0289": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.1.0/24",
+        "AvailabilityZone": "us-west-1c",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-public-subnet1"
+          }
+        ]
+      }
+    },
+    "subnet38417e60": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.5.0/24",
+        "AvailabilityZone": "us-west-1c",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-ert-subnet1"
+          }
+        ]
+      }
+    },
+    "subnetd4b45bb3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.16.0/28",
+        "AvailabilityZone": "us-west-1a",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-management-subnet0"
+          }
+        ]
+      }
+    },
+    "subnete4b05f83": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.8.0/24",
+        "AvailabilityZone": "us-west-1a",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-services-subnet0"
+          }
+        ]
+      }
+    },
+    "subnetb0b659d7": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.12.0/24",
+        "AvailabilityZone": "us-west-1a",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-rds-subnet0"
+          }
+        ]
+      }
+    },
+    "subnet06417e5e": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.16.16/28",
+        "AvailabilityZone": "us-west-1c",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-management-subnet1"
+          }
+        ]
+      }
+    },
+    "subnet3c3e0164": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.13.0/24",
+        "AvailabilityZone": "us-west-1c",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-rds-subnet1"
+          }
+        ]
+      }
+    },
+    "subnet33b15e54": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.4.0/24",
+        "AvailabilityZone": "us-west-1a",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-ert-subnet0"
+          }
+        ]
+      }
+    },
+    "subnet7bb05f1c": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/24",
+        "AvailabilityZone": "us-west-1a",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-public-subnet0"
+          }
+        ]
+      }
+    },
+    "subnet07417e5f": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.9.0/24",
+        "AvailabilityZone": "us-west-1c",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-services-subnet1"
+          }
+        ]
+      }
+    },
+    "igw5914e93d": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },
+    "dopta91de6cc": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "DomainName": "us-west-1.compute.internal",
+        "DomainNameServers": [
+          "AmazonProvidedDNS"
+        ]
+      }
+    },
+    "acl51383e35": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        }
+      }
+    },
+    "rtb00041464": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        }
+      }
+    },
+    "rtb6e07170a": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        }
+      }
+    },
+    "rtbd60616b2": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        }
+      }
+    },
+    "rtb2b06164f": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        }
+      }
+    },
+    "elbnickterraformsshelb": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": [
+          {
+            "Ref": "subnet7bb05f1c"
+          },
+          {
+            "Ref": "subnetd13d0289"
+          }
+        ],
+        "HealthCheck": {
+          "HealthyThreshold": "6",
+          "Interval": "5",
+          "Target": "TCP:2222",
+          "Timeout": "3",
+          "UnhealthyThreshold": "3"
+        },
+        "ConnectionDrainingPolicy": {
+          "Enabled": "false",
+          "Timeout": "300"
+        },
+        "ConnectionSettings": {
+          "IdleTimeout": "3600"
+        },
+        "CrossZone": "true",
+        "SecurityGroups": [
+          {
+            "Ref": "sgsshelbsecuritygroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": "2222",
+            "LoadBalancerPort": "2222",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          }
+        ]
+      }
+    },
+    "elbnickterraformtcpelb": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": [
+          {
+            "Ref": "subnet7bb05f1c"
+          },
+          {
+            "Ref": "subnetd13d0289"
+          }
+        ],
+        "HealthCheck": {
+          "HealthyThreshold": "6",
+          "Interval": "5",
+          "Target": "TCP:80",
+          "Timeout": "3",
+          "UnhealthyThreshold": "3"
+        },
+        "ConnectionDrainingPolicy": {
+          "Enabled": "false",
+          "Timeout": "300"
+        },
+        "ConnectionSettings": {
+          "IdleTimeout": "3600"
+        },
+        "CrossZone": "true",
+        "SecurityGroups": [
+          {
+            "Ref": "sgtcpelbsecuritygroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": "1106",
+            "LoadBalancerPort": "1106",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1051",
+            "LoadBalancerPort": "1051",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1048",
+            "LoadBalancerPort": "1048",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1024",
+            "LoadBalancerPort": "1024",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1118",
+            "LoadBalancerPort": "1118",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1109",
+            "LoadBalancerPort": "1109",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1110",
+            "LoadBalancerPort": "1110",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1050",
+            "LoadBalancerPort": "1050",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1049",
+            "LoadBalancerPort": "1049",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1025",
+            "LoadBalancerPort": "1025",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1108",
+            "LoadBalancerPort": "1108",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1111",
+            "LoadBalancerPort": "1111",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1053",
+            "LoadBalancerPort": "1053",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1026",
+            "LoadBalancerPort": "1026",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1034",
+            "LoadBalancerPort": "1034",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1112",
+            "LoadBalancerPort": "1112",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1052",
+            "LoadBalancerPort": "1052",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1027",
+            "LoadBalancerPort": "1027",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1113",
+            "LoadBalancerPort": "1113",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1039",
+            "LoadBalancerPort": "1039",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1055",
+            "LoadBalancerPort": "1055",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1058",
+            "LoadBalancerPort": "1058",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1114",
+            "LoadBalancerPort": "1114",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1041",
+            "LoadBalancerPort": "1041",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1038",
+            "LoadBalancerPort": "1038",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1054",
+            "LoadBalancerPort": "1054",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1115",
+            "LoadBalancerPort": "1115",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1057",
+            "LoadBalancerPort": "1057",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1116",
+            "LoadBalancerPort": "1116",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1056",
+            "LoadBalancerPort": "1056",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1117",
+            "LoadBalancerPort": "1117",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1088",
+            "LoadBalancerPort": "1088",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1123",
+            "LoadBalancerPort": "1123",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1100",
+            "LoadBalancerPort": "1100",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1091",
+            "LoadBalancerPort": "1091",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1062",
+            "LoadBalancerPort": "1062",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1089",
+            "LoadBalancerPort": "1089",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1122",
+            "LoadBalancerPort": "1122",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1090",
+            "LoadBalancerPort": "1090",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1063",
+            "LoadBalancerPort": "1063",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1121",
+            "LoadBalancerPort": "1121",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1093",
+            "LoadBalancerPort": "1093",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1119",
+            "LoadBalancerPort": "1119",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1060",
+            "LoadBalancerPort": "1060",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1079",
+            "LoadBalancerPort": "1079",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1120",
+            "LoadBalancerPort": "1120",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1092",
+            "LoadBalancerPort": "1092",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1061",
+            "LoadBalancerPort": "1061",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1078",
+            "LoadBalancerPort": "1078",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1037",
+            "LoadBalancerPort": "1037",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1095",
+            "LoadBalancerPort": "1095",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1066",
+            "LoadBalancerPort": "1066",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1059",
+            "LoadBalancerPort": "1059",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1094",
+            "LoadBalancerPort": "1094",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1067",
+            "LoadBalancerPort": "1067",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1097",
+            "LoadBalancerPort": "1097",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1064",
+            "LoadBalancerPort": "1064",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1042",
+            "LoadBalancerPort": "1042",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1096",
+            "LoadBalancerPort": "1096",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1065",
+            "LoadBalancerPort": "1065",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1080",
+            "LoadBalancerPort": "1080",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1099",
+            "LoadBalancerPort": "1099",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1073",
+            "LoadBalancerPort": "1073",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1081",
+            "LoadBalancerPort": "1081",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1098",
+            "LoadBalancerPort": "1098",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1072",
+            "LoadBalancerPort": "1072",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1082",
+            "LoadBalancerPort": "1082",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1103",
+            "LoadBalancerPort": "1103",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1068",
+            "LoadBalancerPort": "1068",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1071",
+            "LoadBalancerPort": "1071",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1083",
+            "LoadBalancerPort": "1083",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1069",
+            "LoadBalancerPort": "1069",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1070",
+            "LoadBalancerPort": "1070",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1084",
+            "LoadBalancerPort": "1084",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1040",
+            "LoadBalancerPort": "1040",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1077",
+            "LoadBalancerPort": "1077",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1085",
+            "LoadBalancerPort": "1085",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1076",
+            "LoadBalancerPort": "1076",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1086",
+            "LoadBalancerPort": "1086",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1036",
+            "LoadBalancerPort": "1036",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1075",
+            "LoadBalancerPort": "1075",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1087",
+            "LoadBalancerPort": "1087",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1074",
+            "LoadBalancerPort": "1074",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1043",
+            "LoadBalancerPort": "1043",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1102",
+            "LoadBalancerPort": "1102",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1031",
+            "LoadBalancerPort": "1031",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1044",
+            "LoadBalancerPort": "1044",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1028",
+            "LoadBalancerPort": "1028",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1105",
+            "LoadBalancerPort": "1105",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1030",
+            "LoadBalancerPort": "1030",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1045",
+            "LoadBalancerPort": "1045",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1029",
+            "LoadBalancerPort": "1029",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1104",
+            "LoadBalancerPort": "1104",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1033",
+            "LoadBalancerPort": "1033",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1035",
+            "LoadBalancerPort": "1035",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1046",
+            "LoadBalancerPort": "1046",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1101",
+            "LoadBalancerPort": "1101",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1107",
+            "LoadBalancerPort": "1107",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1032",
+            "LoadBalancerPort": "1032",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          },
+          {
+            "InstancePort": "1047",
+            "LoadBalancerPort": "1047",
+            "Protocol": "TCP",
+            "InstanceProtocol": "TCP"
+          }
+        ]
+      }
+    },
+    "elbnickterraformwebelb": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": [
+          {
+            "Ref": "subnet7bb05f1c"
+          },
+          {
+            "Ref": "subnetd13d0289"
+          }
+        ],
+        "HealthCheck": {
+          "HealthyThreshold": "6",
+          "Interval": "5",
+          "Target": "HTTP:8080/health",
+          "Timeout": "3",
+          "UnhealthyThreshold": "3"
+        },
+        "ConnectionDrainingPolicy": {
+          "Enabled": "false",
+          "Timeout": "300"
+        },
+        "ConnectionSettings": {
+          "IdleTimeout": "3600"
+        },
+        "CrossZone": "true",
+        "SecurityGroups": [
+          {
+            "Ref": "sgelbsecuritygroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "4443",
+            "Protocol": "SSL",
+            "InstanceProtocol": "TCP",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-0028197559e906ec0b0ca60a92",
+            "PolicyNames": [
+              "ELBSecurityPolicy-2016-08"
+            ]
+          },
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "443",
+            "Protocol": "HTTPS",
+            "InstanceProtocol": "HTTP",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-0028197559e906ec0b0ca60a92",
+            "PolicyNames": [
+              "ELBSecurityPolicy-2016-08"
+            ]
+          },
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "80",
+            "Protocol": "HTTP",
+            "InstanceProtocol": "HTTP"
+          }
+        ]
+      }
+    },
+    "elbnickterraformisosegelb": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": [
+          {
+            "Ref": "subnet7bb05f1c"
+          },
+          {
+            "Ref": "subnetd13d0289"
+          }
+        ],
+        "HealthCheck": {
+          "HealthyThreshold": "6",
+          "Interval": "5",
+          "Target": "HTTP:8080/health",
+          "Timeout": "3",
+          "UnhealthyThreshold": "3"
+        },
+        "ConnectionDrainingPolicy": {
+          "Enabled": "false",
+          "Timeout": "300"
+        },
+        "ConnectionSettings": {
+          "IdleTimeout": "3600"
+        },
+        "CrossZone": "true",
+        "SecurityGroups": [
+          {
+            "Ref": "sgisosegelbsecuritygroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "80",
+            "Protocol": "HTTP",
+            "InstanceProtocol": "HTTP"
+          },
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "4443",
+            "Protocol": "SSL",
+            "InstanceProtocol": "TCP",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-isoseg0028197559e906ec0b0ca60a91",
+            "PolicyNames": [
+              "ELBSecurityPolicy-2016-08"
+            ]
+          },
+          {
+            "InstancePort": "80",
+            "LoadBalancerPort": "443",
+            "Protocol": "HTTPS",
+            "InstanceProtocol": "HTTP",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nick-terraform-isoseg0028197559e906ec0b0ca60a91",
+            "PolicyNames": [
+              "ELBSecurityPolicy-2016-08"
+            ]
+          }
+        ]
+      }
+    },
+    "eip1356649": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "eip525373243": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "instancei0ec3cce20b3e024df": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-7da94839",
+        "InstanceType": "t2.medium",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-nat"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet7bb05f1c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "10.0.0.74",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgnatsecuritygroup"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei05ae089c8654cb911": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-2e02454e",
+        "InstanceType": "m3.large",
+        "KernelId": "aki-880531cd",
+        "KeyName": "nick-terraform-ops-manager-key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-ops-manager"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet7bb05f1c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "10.0.0.241",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgopsmanagersecuritygroup"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "s3nickterraformbuildpacksbucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Elastic Runtime S3 Buildpacks Bucket"
+          }
+        ]
+      }
+    },
+    "s3nickterraformdropletsbucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Elastic Runtime S3 Droplets Bucket"
+          }
+        ]
+      }
+    },
+    "s3nickterraformopsmanagerbucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Ops Manager S3 Bucket"
+          }
+        ]
+      }
+    },
+    "s3nickterraformpackagesbucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Elastic Runtime S3 Packages Bucket"
+          }
+        ]
+      }
+    },
+    "s3nickterraformresourcesbucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Suspended"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Elastic Runtime S3 Resources Bucket"
+          }
+        ]
+      }
+    },
+    "dbsubnetnickterraformdbsubnetgroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "RDS Subnet Group",
+        "SubnetIds": [
+          {
+            "Ref": "subnetb0b659d7"
+          },
+          {
+            "Ref": "subnet3c3e0164"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-db-subnet-group"
+          }
+        ]
+      }
+    },
+    "sgvmssecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "VMs Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-vms-security-group"
+          }
+        ]
+      }
+    },
+    "sgopsmanagersecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Ops Manager Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-ops-manager-security-group"
+          }
+        ]
+      }
+    },
+    "sgisosegelbsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Isoseg ELB Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-isoseg-elb-security-group"
+          }
+        ]
+      }
+    },
+    "sgelbsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ELB Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-elb-security-group"
+          }
+        ]
+      }
+    },
+    "sgmysqlsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "MySQL Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-mysql-security-group"
+          }
+        ]
+      }
+    },
+    "sgnatsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "NAT Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-nat-security-group"
+          }
+        ]
+      }
+    },
+    "sgsshelbsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ELB SSH Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-ssh-elb-security-group"
+          }
+        ]
+      }
+    },
+    "sgtcpelbsecuritygroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "ELB TCP Security Group",
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "nick-terraform-tcp-elb-security-group"
+          }
+        ]
+      }
+    },
+    "acl1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        }
+      }
+    },
+    "acl2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        }
+      }
+    },
+    "subnetacl1": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet7bb05f1c"
+        }
+      }
+    },
+    "subnetacl2": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet38417e60"
+        }
+      }
+    },
+    "subnetacl3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnetb0b659d7"
+        }
+      }
+    },
+    "subnetacl4": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnete4b05f83"
+        }
+      }
+    },
+    "subnetacl5": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnetd13d0289"
+        }
+      }
+    },
+    "subnetacl6": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet07417e5f"
+        }
+      }
+    },
+    "subnetacl7": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet3c3e0164"
+        }
+      }
+    },
+    "subnetacl8": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet06417e5e"
+        }
+      }
+    },
+    "subnetacl9": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnetd4b45bb3"
+        }
+      }
+    },
+    "subnetacl10": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "acl51383e35"
+        },
+        "SubnetId": {
+          "Ref": "subnet33b15e54"
+        }
+      }
+    },
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw5914e93d"
+        }
+      }
+    },
+    "subnetroute1": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb00041464"
+        },
+        "SubnetId": {
+          "Ref": "subnete4b05f83"
+        }
+      }
+    },
+    "subnetroute2": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb00041464"
+        },
+        "SubnetId": {
+          "Ref": "subnet33b15e54"
+        }
+      }
+    },
+    "subnetroute3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb00041464"
+        },
+        "SubnetId": {
+          "Ref": "subnetd4b45bb3"
+        }
+      }
+    },
+    "subnetroute4": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb6e07170a"
+        },
+        "SubnetId": {
+          "Ref": "subnetd13d0289"
+        }
+      }
+    },
+    "subnetroute5": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb6e07170a"
+        },
+        "SubnetId": {
+          "Ref": "subnet7bb05f1c"
+        }
+      }
+    },
+    "subnetroute7": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb2b06164f"
+        },
+        "SubnetId": {
+          "Ref": "subnet07417e5f"
+        }
+      }
+    },
+    "subnetroute8": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb2b06164f"
+        },
+        "SubnetId": {
+          "Ref": "subnet06417e5e"
+        }
+      }
+    },
+    "subnetroute9": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "rtb2b06164f"
+        },
+        "SubnetId": {
+          "Ref": "subnet38417e60"
+        }
+      }
+    },
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb00041464"
+        },
+        "InstanceId": {
+          "Ref": "instancei0ec3cce20b3e024df"
+        }
+      }
+    },
+    "route2": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb6e07170a"
+        },
+        "GatewayId": {
+          "Ref": "igw5914e93d"
+        }
+      },
+      "DependsOn": "gw1"
+    },
+    "route3": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb2b06164f"
+        },
+        "InstanceId": {
+          "Ref": "instancei0ec3cce20b3e024df"
+        }
+      }
+    },
+    "dchpassoc1": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpca0115ec4"
+        },
+        "DhcpOptionsId": {
+          "Ref": "dopta91de6cc"
+        }
+      }
+    },
+    "assoc1": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip525373243",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instancei0ec3cce20b3e024df"
+        }
+      }
+    },
+    "assoc2": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip1356649",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instancei05ae089c8654cb911"
+        }
+      }
+    },
+    "ingress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgvmssecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "ingress2": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress3": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress4": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "25555",
+        "ToPort": "25555",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "ingress5": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "6868",
+        "ToPort": "6868",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "ingress6": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress7": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgisosegelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress8": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgisosegelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4443",
+        "ToPort": "4443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress9": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgisosegelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress10": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress11": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4443",
+        "ToPort": "4443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress12": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress13": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgmysqlsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "3306",
+        "ToPort": "3306",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "ingress14": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgnatsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "ingress15": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgsshelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2222",
+        "ToPort": "2222",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress16": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgtcpelbsecuritygroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "1024",
+        "ToPort": "1123",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgvmssecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress2": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgopsmanagersecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress3": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgisosegelbsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress4": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgelbsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress5": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgmysqlsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "10.0.0.0/16"
+      }
+    },
+    "egress6": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgnatsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress7": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgsshelbsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress8": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgtcpelbsecuritygroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    }
+  },
+  "Description": "CloudFormer template based on https://github.com/pivotal-cf/terraforming-aws"
+}
