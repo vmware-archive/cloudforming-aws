@@ -5,13 +5,23 @@ for the ERT and Isolation Segments, as well as creating a key pair.
 
 ### Create and upload certs
 
+#### ERT certs
+
 1. create cert and key for ERT
 2. upload it
 ```
-aws iam upload-server-certificate --server-certificate-name nm-dm-cloudformer --certificate-body file://nm-dm-cloudformer.crt --private-key file://nm-dm-cloudformer.key
+aws iam upload-server-certificate --server-certificate-name pcf-env-id --certificate-body file://pcf-env-id.crt --private-key file://pcf-env-id.key
 ```
-3. get ARN and replace in cloud formation
-4. repeat 1-3 for ISO segment
+
+#### ISO certs
+
+1. create cert and key for ISO
+2. upload it
+```
+aws iam upload-server-certificate --server-certificate-name pcf-env-id-iso --certificate-body file://pcf-env-id-iso.crt --private-key file://pcf-env-id-iso.key
+```
+
+Then, get the ARNs and replace them in cloud formation template
 
 ### Create key pair
 
@@ -19,7 +29,7 @@ Make sure your AWS CLI is configured to point to the same region you
 will be deploying your cloudformation.  Then, create a key pair:
 
 ```
-aws ec2 create-key-pair --key-name nm-dm-cloudformer
+aws ec2 create-key-pair --key-name pcf-env-id
 ```
 
 (The key name should match what is in the template as `KeyName`)

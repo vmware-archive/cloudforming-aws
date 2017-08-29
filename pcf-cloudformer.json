@@ -4,7 +4,7 @@
     "zonenickterraforminfrastructurecfappcom": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
-        "Name": "nick-terraform.infrastructure.cf-app.com.",
+        "Name": "pcf-env-id.infrastructure.cf-app.com.",
         "HostedZoneConfig": {
           "Comment": "Managed by Terraform"
         }
@@ -18,11 +18,11 @@
         },
         "RecordSets": [
           {
-            "Name": "\\052.apps.nick-terraform.infrastructure.cf-app.com.",
+            "Name": "\\052.apps.pcf-env-id.infrastructure.cf-app.com.",
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "nick-terraform-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+              "pcf-env-id-web-elb-1244981103.us-west-1.elb.amazonaws.com"
             ]
           }
         ]
@@ -36,7 +36,7 @@
         },
         "RecordSets": [
           {
-            "Name": "pcf.nick-terraform.infrastructure.cf-app.com.",
+            "Name": "pcf.pcf-env-id.infrastructure.cf-app.com.",
             "Type": "A",
             "TTL": "300",
             "ResourceRecords": [
@@ -56,11 +56,11 @@
         },
         "RecordSets": [
           {
-            "Name": "\\052.sys.nick-terraform.infrastructure.cf-app.com.",
+            "Name": "\\052.sys.pcf-env-id.infrastructure.cf-app.com.",
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "nick-terraform-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+              "pcf-env-id-web-elb-1244981103.us-west-1.elb.amazonaws.com"
             ]
           }
         ]
@@ -74,11 +74,11 @@
         },
         "RecordSets": [
           {
-            "Name": "ssh.sys.nick-terraform.infrastructure.cf-app.com.",
+            "Name": "ssh.sys.pcf-env-id.infrastructure.cf-app.com.",
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "nick-terraform-ssh-elb-1869042241.us-west-1.elb.amazonaws.com"
+              "pcf-env-id-ssh-elb-1869042241.us-west-1.elb.amazonaws.com"
             ]
           }
         ]
@@ -92,11 +92,11 @@
         },
         "RecordSets": [
           {
-            "Name": "tcp.nick-terraform.infrastructure.cf-app.com.",
+            "Name": "tcp.pcf-env-id.infrastructure.cf-app.com.",
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "nick-terraform-tcp-elb-1786786484.us-west-1.elb.amazonaws.com"
+              "pcf-env-id-tcp-elb-1786786484.us-west-1.elb.amazonaws.com"
             ]
           }
         ]
@@ -112,7 +112,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-vpc"
+            "Value": "pcf-env-id-vpc"
           }
         ]
       }
@@ -128,7 +128,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-public-subnet1"
+            "Value": "pcf-env-id-public-subnet1"
           }
         ]
       }
@@ -144,7 +144,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-ert-subnet1"
+            "Value": "pcf-env-id-ert-subnet1"
           }
         ]
       }
@@ -160,7 +160,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-management-subnet0"
+            "Value": "pcf-env-id-management-subnet0"
           }
         ]
       }
@@ -176,7 +176,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-services-subnet0"
+            "Value": "pcf-env-id-services-subnet0"
           }
         ]
       }
@@ -192,7 +192,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-rds-subnet0"
+            "Value": "pcf-env-id-rds-subnet0"
           }
         ]
       }
@@ -208,7 +208,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-management-subnet1"
+            "Value": "pcf-env-id-management-subnet1"
           }
         ]
       }
@@ -224,7 +224,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-rds-subnet1"
+            "Value": "pcf-env-id-rds-subnet1"
           }
         ]
       }
@@ -240,7 +240,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-ert-subnet0"
+            "Value": "pcf-env-id-ert-subnet0"
           }
         ]
       }
@@ -256,7 +256,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-public-subnet0"
+            "Value": "pcf-env-id-public-subnet0"
           }
         ]
       }
@@ -272,7 +272,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-services-subnet1"
+            "Value": "pcf-env-id-services-subnet1"
           }
         ]
       }
@@ -1044,7 +1044,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1054,7 +1054,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1111,7 +1111,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer-iso",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id-iso",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1121,7 +1121,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/nm-dm-cloudformer-iso",
+            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id-iso",
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1158,7 +1158,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-nat"
+            "Value": "pcf-env-id-nat"
           }
         ],
         "NetworkInterfaces": [
@@ -1200,12 +1200,12 @@
         "ImageId": "ami-2e02454e",
         "InstanceType": "m3.large",
         "KernelId": "aki-880531cd",
-        "KeyName": "nm-dm-cloudformer",
+        "KeyName": "pcf-env-id",
         "Monitoring": "false",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-ops-manager"
+            "Value": "pcf-env-id-ops-manager"
           }
         ],
         "NetworkInterfaces": [
@@ -1320,7 +1320,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-db-subnet-group"
+            "Value": "pcf-env-id-db-subnet-group"
           }
         ]
       }
@@ -1335,7 +1335,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-vms-security-group"
+            "Value": "pcf-env-id-vms-security-group"
           }
         ]
       }
@@ -1350,7 +1350,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-ops-manager-security-group"
+            "Value": "pcf-env-id-ops-manager-security-group"
           }
         ]
       }
@@ -1365,7 +1365,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-isoseg-elb-security-group"
+            "Value": "pcf-env-id-isoseg-elb-security-group"
           }
         ]
       }
@@ -1380,7 +1380,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-elb-security-group"
+            "Value": "pcf-env-id-elb-security-group"
           }
         ]
       }
@@ -1395,7 +1395,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-mysql-security-group"
+            "Value": "pcf-env-id-mysql-security-group"
           }
         ]
       }
@@ -1410,7 +1410,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-nat-security-group"
+            "Value": "pcf-env-id-nat-security-group"
           }
         ]
       }
@@ -1425,7 +1425,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-ssh-elb-security-group"
+            "Value": "pcf-env-id-ssh-elb-security-group"
           }
         ]
       }
@@ -1440,7 +1440,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "nick-terraform-tcp-elb-security-group"
+            "Value": "pcf-env-id-tcp-elb-security-group"
           }
         ]
       }
