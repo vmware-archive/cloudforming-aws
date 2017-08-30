@@ -52,11 +52,19 @@
     },
     "OpsManAMI" : {
       "Type": "String",
-      "Description": "Exampe: ami-123abc78"
+      "Description": "Exampe: ami-6e799016"
     },
     "OpsManSSHKeyPairName" : {
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Description": "Select the SSH keypair to use for the Ops Manager VM"
+    },
+    "ServerCertNameERT" : {
+      "Type": "String",
+      "Description": "Enter the server certificate name for the ERT"
+    },
+    "ServerCertNameIso" : {
+      "Type": "String",
+      "Description": "Select the server certificate name for the Isolation Segment"
     }
   },
   "Resources": {
@@ -1192,7 +1200,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" } ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameERT" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1202,7 +1210,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" } ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameERT" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1262,7 +1270,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" }, "-iso" ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameIso" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1272,7 +1280,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" }, "-iso" ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameIso" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
