@@ -1,10 +1,17 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters" : {
+  "EnvIdParameter" : {
+    "Type" : "String",
+    "Default" : "pcf-env-id",
+    "Description" : "The Environment ID. Default: \"pcf-env-id\"."
+    }
+  },
   "Resources": {
     "zonenickterraforminfrastructurecfappcom": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
-        "Name": "pcf-env-id.infrastructure.cf-app.com.",
+        "Name": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
         "HostedZoneConfig": {
           "Comment": "Managed by Terraform"
         }
@@ -18,11 +25,11 @@
         },
         "RecordSets": [
           {
-            "Name": "\\052.apps.pcf-env-id.infrastructure.cf-app.com.",
+            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "pcf-env-id-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-web-elb-1244981103.us-west-1.elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -36,7 +43,7 @@
         },
         "RecordSets": [
           {
-            "Name": "pcf.pcf-env-id.infrastructure.cf-app.com.",
+            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "A",
             "TTL": "300",
             "ResourceRecords": [
@@ -56,11 +63,11 @@
         },
         "RecordSets": [
           {
-            "Name": "\\052.sys.pcf-env-id.infrastructure.cf-app.com.",
+            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "pcf-env-id-web-elb-1244981103.us-west-1.elb.amazonaws.com"
+              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-web-elb-1244981103.us-west-1.elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -74,11 +81,11 @@
         },
         "RecordSets": [
           {
-            "Name": "ssh.sys.pcf-env-id.infrastructure.cf-app.com.",
+            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "pcf-env-id-ssh-elb-1869042241.us-west-1.elb.amazonaws.com"
+              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ssh-elb-1869042241.us-west-1.elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -92,11 +99,11 @@
         },
         "RecordSets": [
           {
-            "Name": "tcp.pcf-env-id.infrastructure.cf-app.com.",
+            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              "pcf-env-id-tcp-elb-1786786484.us-west-1.elb.amazonaws.com"
+              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-tcp-elb-1786786484.us-west-1.elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -112,7 +119,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-vpc"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-vpc" ] ] }
           }
         ]
       }
@@ -128,7 +135,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-public-subnet1"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-public-subnet1" ] ] }
           }
         ]
       }
@@ -144,7 +151,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-ert-subnet1"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ert-subnet1" ] ] }
           }
         ]
       }
@@ -160,7 +167,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-management-subnet0"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-management-subnet0" ] ] }
           }
         ]
       }
@@ -176,7 +183,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-services-subnet0"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-services-subnet0" ] ] }
           }
         ]
       }
@@ -192,7 +199,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-rds-subnet0"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-rds-subnet0" ] ] }
           }
         ]
       }
@@ -208,7 +215,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-management-subnet1"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-management-subnet1" ] ] }
           }
         ]
       }
@@ -224,7 +231,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-rds-subnet1"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-rds-subnet1" ] ] }
           }
         ]
       }
@@ -240,7 +247,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-ert-subnet0"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ert-subnet0" ] ] }
           }
         ]
       }
@@ -256,7 +263,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-public-subnet0"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-public-subnet0" ] ] }
           }
         ]
       }
@@ -272,7 +279,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-services-subnet1"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-services-subnet1" ] ] }
           }
         ]
       }
@@ -1044,7 +1051,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id",
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1054,7 +1061,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id",
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1111,7 +1118,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id-iso",
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" }, "-iso" ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1121,7 +1128,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": "arn:aws:iam::165902344549:server-certificate/pcf-env-id-iso",
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" }, "-iso" ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1158,7 +1165,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-nat"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-nat" ] ] }
           }
         ],
         "NetworkInterfaces": [
@@ -1200,12 +1207,12 @@
         "ImageId": "ami-2e02454e",
         "InstanceType": "m3.large",
         "KernelId": "aki-880531cd",
-        "KeyName": "pcf-env-id",
+        "KeyName": { "Ref": "EnvIdParameter" },
         "Monitoring": "false",
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-ops-manager"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ops-manager" ] ] }
           }
         ],
         "NetworkInterfaces": [
@@ -1320,7 +1327,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-db-subnet-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-db-subnet-group" ] ] }
           }
         ]
       }
@@ -1335,7 +1342,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-vms-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-vms-security-group" ] ] }
           }
         ]
       }
@@ -1350,7 +1357,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-ops-manager-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ops-manager-security-group" ] ] }
           }
         ]
       }
@@ -1365,7 +1372,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-isoseg-elb-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-isoseg-elb-security-group" ] ] }
           }
         ]
       }
@@ -1380,7 +1387,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-elb-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-elb-security-group" ] ] }
           }
         ]
       }
@@ -1395,7 +1402,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-mysql-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-mysql-security-group" ] ] }
           }
         ]
       }
@@ -1410,7 +1417,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-nat-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-nat-security-group" ] ] }
           }
         ]
       }
@@ -1425,7 +1432,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-ssh-elb-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ssh-elb-security-group" ] ] }
           }
         ]
       }
@@ -1440,7 +1447,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "pcf-env-id-tcp-elb-security-group"
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-tcp-elb-security-group" ] ] }
           }
         ]
       }
