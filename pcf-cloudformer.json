@@ -1,6 +1,37 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "CloudFormation template for configuring Pivotal Cloud Foundry on AWS",
+  "Mappings": {
+    "NATRegionToAmiMap" : {
+      "us-east-1" : {
+        "id" : "ami-303b1458"
+      },
+      "us-west-1" : {
+        "id" : "ami-7da94839"
+      },
+      "us-west-2" : {
+        "id" : "ami-69ae8259"
+      },
+      "eu-west-1" : {
+        "id" : "ami-6975eb1e"
+      },
+      "eu-central-1" : {
+        "id" : "ami-46073a5b"
+      },
+      "ap-southeast-1" : {
+        "id" : "ami-b49dace6"
+      },
+      "ap-northeast-1" : {
+        "id" : "ami-03cf3903"
+      },
+      "ap-southeast-2" : {
+        "id" : "ami-e7ee9edd"
+      },
+      "sa-east-1" : {
+        "id" : "ami-fbfa41e6"
+      }
+    }
+  },
   "Parameters" : {
     "EnvironmentID" : {
       "Type" : "String",
@@ -18,6 +49,10 @@
     "AvailabilityZone3" : {
       "Type" : "String",
       "Description" : "Example: us-west-2c"
+    },
+    "OpsManAMI" : {
+      "Type": "String",
+      "Description": "Exampe: ami-123abc78"
     },
     "OpsManSSHKeyPairName" : {
       "Type": "AWS::EC2::KeyPair::KeyName",
@@ -1268,7 +1303,7 @@
       "Properties": {
         "DisableApiTermination": "false",
         "InstanceInitiatedShutdownBehavior": "stop",
-        "ImageId": "ami-69ae8259",
+        "ImageId": {"Fn::FindInMap" : [ "NATRegionToAmiMap", { "Ref" : "AWS::Region" }, "id"]},
         "InstanceType": "t2.medium",
         "Monitoring": "false",
         "Tags": [
@@ -1313,7 +1348,7 @@
         ],
         "DisableApiTermination": "false",
         "InstanceInitiatedShutdownBehavior": "stop",
-        "ImageId": "ami-6e799016",
+        "ImageId": { "Ref": "OpsManAMI" },
         "InstanceType": "m3.large",
         "KeyName": { "Ref": "OpsManSSHKeyPairName" },
         "Monitoring": "false",
