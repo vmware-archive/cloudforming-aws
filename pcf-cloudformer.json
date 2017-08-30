@@ -9,11 +9,19 @@
     },
     "AvailabilityZone1" : {
       "Type" : "String",
-      "Description" : "Example: us-west-1a"
+      "Description" : "Example: us-west-2a"
     },
     "AvailabilityZone2" : {
       "Type" : "String",
-      "Description" : "Example: us-west-1c"
+      "Description" : "Example: us-west-2b"
+    },
+    "AvailabilityZone3" : {
+      "Type" : "String",
+      "Description" : "Example: us-west-2c"
+    },
+    "OpsManSSHKeyPairName" : {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "Select the SSH keypair to use for the Ops Manager VM"
     }
   },
   "Resources": {
@@ -165,6 +173,22 @@
         ]
       }
     },
+    "PcfPublicSubnetAZ3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.2.0/24",
+        "AvailabilityZone": { "Ref": "AvailabilityZone3" },
+        "VpcId": {
+          "Ref": "PcfVPC"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-public-subnet-az3" ] ] }
+          }
+        ]
+      }
+    },
     "PcfERTSubnetAZ1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -193,6 +217,22 @@
           {
             "Key": "Name",
             "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ert-subnet-az2" ] ] }
+          }
+        ]
+      }
+    },
+    "PcfERTSubnetAZ3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.6.0/24",
+        "AvailabilityZone": { "Ref": "AvailabilityZone3" },
+        "VpcId": {
+          "Ref": "PcfVPC"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ert-subnet-az3" ] ] }
           }
         ]
       }
@@ -229,6 +269,22 @@
         ]
       }
     },
+    "PcfManagementSubnetAZ3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.16.32/28",
+        "AvailabilityZone": { "Ref": "AvailabilityZone3" },
+        "VpcId": {
+          "Ref": "PcfVPC"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-management-subnet-az3" ] ] }
+          }
+        ]
+      }
+    },
     "PcfRDSSubnetAZ1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -257,6 +313,22 @@
           {
             "Key": "Name",
             "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet-az2" ] ] }
+          }
+        ]
+      }
+    },
+    "PcfRDSSubnetAZ3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.14.0/24",
+        "AvailabilityZone": { "Ref": "AvailabilityZone3" },
+        "VpcId": {
+          "Ref": "PcfVPC"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet-az3" ] ] }
           }
         ]
       }
@@ -293,6 +365,22 @@
         ]
       }
     },
+    "PcfServicesSubnetAZ3": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.10.0/24",
+        "AvailabilityZone": { "Ref": "AvailabilityZone3" },
+        "VpcId": {
+          "Ref": "PcfVPC"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-services-subnet-az3" ] ] }
+          }
+        ]
+      }
+    },
     "PcfInternetGateway": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
@@ -315,7 +403,7 @@
         }
       }
     },
-    "PcfRouteTable1": {
+    "PcfNatRouteTableAZ1": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -323,7 +411,7 @@
         }
       }
     },
-    "PcfRouteTable2": {
+    "PcfInternetGatewayRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -331,7 +419,7 @@
         }
       }
     },
-    "PcfRouteTable3": {
+    "PcfNatRouteTableAZ2": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -339,7 +427,7 @@
         }
       }
     },
-    "PcfRouteTable4": {
+    "PcfNatRouteTableAZ3": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -356,6 +444,9 @@
           },
           {
             "Ref": "PcfPublicSubnetAZ2"
+          },
+          {
+            "Ref": "PcfPublicSubnetAZ3"
           }
         ],
         "HealthCheck": {
@@ -397,6 +488,9 @@
           },
           {
             "Ref": "PcfPublicSubnetAZ2"
+          },
+          {
+            "Ref": "PcfPublicSubnetAZ3"
           }
         ],
         "HealthCheck": {
@@ -1032,6 +1126,9 @@
           },
           {
             "Ref": "PcfPublicSubnetAZ2"
+          },
+          {
+            "Ref": "PcfPublicSubnetAZ3"
           }
         ],
         "HealthCheck": {
@@ -1093,6 +1190,9 @@
           },
           {
             "Ref": "PcfPublicSubnetAZ2"
+          },
+          {
+            "Ref": "PcfPublicSubnetAZ3"
           }
         ],
         "HealthCheck": {
@@ -1168,7 +1268,7 @@
       "Properties": {
         "DisableApiTermination": "false",
         "InstanceInitiatedShutdownBehavior": "stop",
-        "ImageId": "ami-7da94839",
+        "ImageId": "ami-69ae8259",
         "InstanceType": "t2.medium",
         "Monitoring": "false",
         "Tags": [
@@ -1213,10 +1313,9 @@
         ],
         "DisableApiTermination": "false",
         "InstanceInitiatedShutdownBehavior": "stop",
-        "ImageId": "ami-2e02454e",
+        "ImageId": "ami-6e799016",
         "InstanceType": "m3.large",
-        "KernelId": "aki-880531cd",
-        "KeyName": { "Ref": "EnvironmentID" },
+        "KeyName": { "Ref": "OpsManSSHKeyPairName" },
         "Monitoring": "false",
         "Tags": [
           {
@@ -1508,6 +1607,17 @@
         }
       }
     },
+    "PcfPublicSubnetAclAZ3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PcfNetworkAcl"
+        },
+        "SubnetId": {
+          "Ref": "PcfPublicSubnetAZ3"
+        }
+      }
+    },
     "PcfERTSubnetAclAZ1": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
@@ -1527,6 +1637,17 @@
         },
         "SubnetId": {
           "Ref": "PcfERTSubnetAZ2"
+        }
+      }
+    },
+    "PcfERTSubnetAclAZ3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PcfNetworkAcl"
+        },
+        "SubnetId": {
+          "Ref": "PcfERTSubnetAZ3"
         }
       }
     },
@@ -1552,6 +1673,17 @@
         }
       }
     },
+    "PcfManagementSubnetAclAZ3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PcfNetworkAcl"
+        },
+        "SubnetId": {
+          "Ref": "PcfManagementSubnetAZ3"
+        }
+      }
+    },
     "PcfRDSSubnetAclAZ1": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
@@ -1571,6 +1703,17 @@
         },
         "SubnetId": {
           "Ref": "PcfRDSSubnetAZ2"
+        }
+      }
+    },
+    "PcfRDSSubnetAclAZ3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PcfNetworkAcl"
+        },
+        "SubnetId": {
+          "Ref": "PcfRDSSubnetAZ3"
         }
       }
     },
@@ -1596,6 +1739,17 @@
         }
       }
     },
+    "PcfServicesSubnetAclAZ3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "PcfNetworkAcl"
+        },
+        "SubnetId": {
+          "Ref": "PcfServicesSubnetAZ3"
+        }
+      }
+    },
     "PcfVpcGatewayAttachment1": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
@@ -1611,7 +1765,7 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable2"
+          "Ref": "PcfInternetGatewayRouteTable"
         },
         "SubnetId": {
           "Ref": "PcfPublicSubnetAZ1"
@@ -1622,10 +1776,21 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable2"
+          "Ref": "PcfInternetGatewayRouteTable"
         },
         "SubnetId": {
           "Ref": "PcfPublicSubnetAZ2"
+        }
+      }
+    },
+    "PcfPublicSubnetRouteTableAZ3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PcfInternetGatewayRouteTable"
+        },
+        "SubnetId": {
+          "Ref": "PcfPublicSubnetAZ3"
         }
       }
     },
@@ -1633,7 +1798,7 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable1"
+          "Ref": "PcfNatRouteTableAZ1"
         },
         "SubnetId": {
           "Ref": "PcfERTSubnetAZ1"
@@ -1644,10 +1809,21 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable4"
+          "Ref": "PcfNatRouteTableAZ2"
         },
         "SubnetId": {
           "Ref": "PcfERTSubnetAZ2"
+        }
+      }
+    },
+    "PcfERTSubnetRouteTableAZ3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PcfNatRouteTableAZ3"
+        },
+        "SubnetId": {
+          "Ref": "PcfERTSubnetAZ3"
         }
       }
     },
@@ -1655,7 +1831,7 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable1"
+          "Ref": "PcfNatRouteTableAZ1"
         },
         "SubnetId": {
           "Ref": "PcfManagementSubnetAZ1"
@@ -1666,10 +1842,21 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable4"
+          "Ref": "PcfNatRouteTableAZ2"
         },
         "SubnetId": {
           "Ref": "PcfManagementSubnetAZ2"
+        }
+      }
+    },
+    "PcfManagementSubnetRouteTableAZ3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PcfNatRouteTableAZ3"
+        },
+        "SubnetId": {
+          "Ref": "PcfManagementSubnetAZ3"
         }
       }
     },
@@ -1677,7 +1864,7 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable1"
+          "Ref": "PcfNatRouteTableAZ1"
         },
         "SubnetId": {
           "Ref": "PcfServicesSubnetAZ1"
@@ -1688,31 +1875,42 @@
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "PcfRouteTable4"
+          "Ref": "PcfNatRouteTableAZ2"
         },
         "SubnetId": {
           "Ref": "PcfServicesSubnetAZ2"
         }
       }
     },
-    "PcfRoute1": {
+    "PcfServicesSubnetRouteTableAZ3": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PcfNatRouteTableAZ3"
+        },
+        "SubnetId": {
+          "Ref": "PcfServicesSubnetAZ3"
+        }
+      }
+    },
+    "PcfNatRouteAZ1": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "PcfRouteTable1"
+          "Ref": "PcfNatRouteTableAZ1"
         },
         "InstanceId": {
           "Ref": "PcfNatInstance"
         }
       }
     },
-    "PcfRoute2": {
+    "PcfInternetGatewayRoute": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "PcfRouteTable2"
+          "Ref": "PcfInternetGatewayRouteTable"
         },
         "GatewayId": {
           "Ref": "PcfInternetGateway"
@@ -1720,12 +1918,12 @@
       },
       "DependsOn": "PcfVpcGatewayAttachment1"
     },
-    "PcfRoute3": {
+    "PcfNatRouteAZ2": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "PcfRouteTable4"
+          "Ref": "PcfNatRouteTableAZ2"
         },
         "InstanceId": {
           "Ref": "PcfNatInstance"
