@@ -1,19 +1,27 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Parameters" : {
-  "EnvIdParameter" : {
-    "Type" : "String",
-    "Default" : "pcf-env-id",
-    "Description" : "The Environment ID. Default: \"pcf-env-id\"."
+    "EnvironmentID" : {
+      "Type" : "String",
+      "Default" : "pcf-env-id",
+      "Description" : "Default: pcf-env-id"
+    },
+    "AvailabilityZone1" : {
+      "Type" : "String",
+      "Description" : "Example: us-west-1a"
+    },
+    "AvailabilityZone2" : {
+      "Type" : "String",
+      "Description" : "Example: us-west-1c"
     }
   },
   "Resources": {
     "zonenickterraforminfrastructurecfappcom": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
-        "Name": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+        "Name": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
         "HostedZoneConfig": {
-          "Comment": "Managed by Terraform"
+          "Comment": "Created by CloudFormation"
         }
       }
     },
@@ -25,11 +33,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-web-elb-1244981103.us-west-1.elb.amazonaws.com" ] ] }
+              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-web-elb-1244981103.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -43,7 +51,7 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "A",
             "TTL": "300",
             "ResourceRecords": [
@@ -63,11 +71,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-web-elb-1244981103.us-west-1.elb.amazonaws.com" ] ] }
+              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-web-elb-1244981103.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -81,11 +89,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ssh-elb-1869042241.us-west-1.elb.amazonaws.com" ] ] }
+              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ssh-elb-1869042241.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -99,11 +107,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "EnvIdParameter" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-tcp-elb-1786786484.us-west-1.elb.amazonaws.com" ] ] }
+              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-tcp-elb-1786786484.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
             ]
           }
         ]
@@ -119,7 +127,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-vpc" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-vpc" ] ] }
           }
         ]
       }
@@ -128,14 +136,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.1.0/24",
-        "AvailabilityZone": "us-west-1c",
+        "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-public-subnet1" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-public-subnet1" ] ] }
           }
         ]
       }
@@ -144,14 +152,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.5.0/24",
-        "AvailabilityZone": "us-west-1c",
+        "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ert-subnet1" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ert-subnet1" ] ] }
           }
         ]
       }
@@ -160,14 +168,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.16.0/28",
-        "AvailabilityZone": "us-west-1a",
+        "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-management-subnet0" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-management-subnet0" ] ] }
           }
         ]
       }
@@ -176,14 +184,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.8.0/24",
-        "AvailabilityZone": "us-west-1a",
+        "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-services-subnet0" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-services-subnet0" ] ] }
           }
         ]
       }
@@ -192,14 +200,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.12.0/24",
-        "AvailabilityZone": "us-west-1a",
+        "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-rds-subnet0" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet0" ] ] }
           }
         ]
       }
@@ -208,14 +216,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.16.16/28",
-        "AvailabilityZone": "us-west-1c",
+        "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-management-subnet1" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-management-subnet1" ] ] }
           }
         ]
       }
@@ -224,14 +232,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.13.0/24",
-        "AvailabilityZone": "us-west-1c",
+        "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-rds-subnet1" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet1" ] ] }
           }
         ]
       }
@@ -240,14 +248,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.4.0/24",
-        "AvailabilityZone": "us-west-1a",
+        "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ert-subnet0" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ert-subnet0" ] ] }
           }
         ]
       }
@@ -256,14 +264,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.0.0/24",
-        "AvailabilityZone": "us-west-1a",
+        "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-public-subnet0" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-public-subnet0" ] ] }
           }
         ]
       }
@@ -272,14 +280,14 @@
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.9.0/24",
-        "AvailabilityZone": "us-west-1c",
+        "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
           "Ref": "vpca0115ec4"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-services-subnet1" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-services-subnet1" ] ] }
           }
         ]
       }
@@ -292,7 +300,7 @@
     "dopta91de6cc": {
       "Type": "AWS::EC2::DHCPOptions",
       "Properties": {
-        "DomainName": "us-west-1.compute.internal",
+        "DomainName": {"Fn::Join": ["",[ { "Ref": "AWS::Region" }, ".compute.internal" ] ] },
         "DomainNameServers": [
           "AmazonProvidedDNS"
         ]
@@ -1051,7 +1059,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" } ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1061,7 +1069,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" } ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" } ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1118,7 +1126,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" }, "-iso" ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" }, "-iso" ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1128,7 +1136,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvIdParameter" }, "-iso" ] ] },
+            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::165902344549:server-certificate/", {"Ref": "EnvironmentID" }, "-iso" ] ] },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1165,7 +1173,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-nat" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-nat" ] ] }
           }
         ],
         "NetworkInterfaces": [
@@ -1207,12 +1215,12 @@
         "ImageId": "ami-2e02454e",
         "InstanceType": "m3.large",
         "KernelId": "aki-880531cd",
-        "KeyName": { "Ref": "EnvIdParameter" },
+        "KeyName": { "Ref": "EnvironmentID" },
         "Monitoring": "false",
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ops-manager" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ops-manager" ] ] }
           }
         ],
         "NetworkInterfaces": [
@@ -1327,7 +1335,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-db-subnet-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-db-subnet-group" ] ] }
           }
         ]
       }
@@ -1342,7 +1350,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-vms-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-vms-security-group" ] ] }
           }
         ]
       }
@@ -1357,7 +1365,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ops-manager-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ops-manager-security-group" ] ] }
           }
         ]
       }
@@ -1372,7 +1380,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-isoseg-elb-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-isoseg-elb-security-group" ] ] }
           }
         ]
       }
@@ -1387,7 +1395,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-elb-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-elb-security-group" ] ] }
           }
         ]
       }
@@ -1402,7 +1410,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-mysql-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-mysql-security-group" ] ] }
           }
         ]
       }
@@ -1417,7 +1425,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-nat-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-nat-security-group" ] ] }
           }
         ]
       }
@@ -1432,7 +1440,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-ssh-elb-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ssh-elb-security-group" ] ] }
           }
         ]
       }
@@ -1447,7 +1455,7 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvIdParameter" }, "-tcp-elb-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-tcp-elb-security-group" ] ] }
           }
         ]
       }
