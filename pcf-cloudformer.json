@@ -1,5 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "CloudFormation template for configuring Pivotal Cloud Foundry on AWS",
   "Parameters" : {
     "EnvironmentID" : {
       "Type" : "String",
@@ -16,7 +17,7 @@
     }
   },
   "Resources": {
-    "zonenickterraforminfrastructurecfappcom": {
+    "PcfHostedZone": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
         "Name": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
@@ -25,11 +26,11 @@
         }
       }
     },
-    "dns052appsnickterraforminfrastructurecfappcom": {
+    "PcfAppsCNAME": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {
-          "Ref": "zonenickterraforminfrastructurecfappcom"
+          "Ref": "PcfHostedZone"
         },
         "RecordSets": [
           {
@@ -43,11 +44,11 @@
         ]
       }
     },
-    "dnspcfnickterraforminfrastructurecfappcom": {
+    "PcfARecord": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {
-          "Ref": "zonenickterraforminfrastructurecfappcom"
+          "Ref": "PcfHostedZone"
         },
         "RecordSets": [
           {
@@ -56,18 +57,18 @@
             "TTL": "300",
             "ResourceRecords": [
               {
-                "Ref": "eip1356649"
+                "Ref": "PcfEip1"
               }
             ]
           }
         ]
       }
     },
-    "dns052sysnickterraforminfrastructurecfappcom": {
+    "PcfSysCNAME": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {
-          "Ref": "zonenickterraforminfrastructurecfappcom"
+          "Ref": "PcfHostedZone"
         },
         "RecordSets": [
           {
@@ -81,11 +82,11 @@
         ]
       }
     },
-    "dnssshsysnickterraforminfrastructurecfappcom": {
+    "PcfSysSshCNAME": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {
-          "Ref": "zonenickterraforminfrastructurecfappcom"
+          "Ref": "PcfHostedZone"
         },
         "RecordSets": [
           {
@@ -99,11 +100,11 @@
         ]
       }
     },
-    "dnstcpnickterraforminfrastructurecfappcom": {
+    "PcfTcpCNAME": {
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {
-          "Ref": "zonenickterraforminfrastructurecfappcom"
+          "Ref": "PcfHostedZone"
         },
         "RecordSets": [
           {
@@ -117,7 +118,7 @@
         ]
       }
     },
-    "vpca0115ec4": {
+    "PcfVPC": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
         "CidrBlock": "10.0.0.0/16",
@@ -132,13 +133,13 @@
         ]
       }
     },
-    "subnetd13d0289": {
+    "PcfPublicSubnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.1.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -148,13 +149,13 @@
         ]
       }
     },
-    "subnet38417e60": {
+    "PcfERTSubnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.5.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -164,13 +165,13 @@
         ]
       }
     },
-    "subnetd4b45bb3": {
+    "PcfManagementSubnet0": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.16.0/28",
         "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -180,13 +181,13 @@
         ]
       }
     },
-    "subnete4b05f83": {
+    "PcfServicesSubnet0": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.8.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -196,13 +197,13 @@
         ]
       }
     },
-    "subnetb0b659d7": {
+    "PcfRDSSubnet0": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.12.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -212,13 +213,13 @@
         ]
       }
     },
-    "subnet06417e5e": {
+    "PcfManagementSubnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.16.16/28",
         "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -228,13 +229,13 @@
         ]
       }
     },
-    "subnet3c3e0164": {
+    "PcfRDSSubnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.13.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -244,13 +245,13 @@
         ]
       }
     },
-    "subnet33b15e54": {
+    "PcfERTSubnet0": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.4.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -260,13 +261,13 @@
         ]
       }
     },
-    "subnet7bb05f1c": {
+    "PcfPublicSubnet0": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.0.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone2" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -276,13 +277,13 @@
         ]
       }
     },
-    "subnet07417e5f": {
+    "PcfServicesSubnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "10.0.9.0/24",
         "AvailabilityZone": { "Ref": "AvailabilityZone1" },
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -292,12 +293,12 @@
         ]
       }
     },
-    "igw5914e93d": {
+    "PcfInternetGateway": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
       }
     },
-    "dopta91de6cc": {
+    "PcfDHCPOptions": {
       "Type": "AWS::EC2::DHCPOptions",
       "Properties": {
         "DomainName": {"Fn::Join": ["",[ { "Ref": "AWS::Region" }, ".compute.internal" ] ] },
@@ -306,55 +307,55 @@
         ]
       }
     },
-    "acl51383e35": {
+    "PcfNetworkAcl": {
       "Type": "AWS::EC2::NetworkAcl",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         }
       }
     },
-    "rtb00041464": {
+    "PcfRouteTable1": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         }
       }
     },
-    "rtb6e07170a": {
+    "PcfRouteTable2": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         }
       }
     },
-    "rtbd60616b2": {
+    "PcfRouteTable3": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         }
       }
     },
-    "rtb2b06164f": {
+    "PcfRouteTable4": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         }
       }
     },
-    "elbnickterraformsshelb": {
+    "PcfElbSsh": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
           {
-            "Ref": "subnet7bb05f1c"
+            "Ref": "PcfPublicSubnet0"
           },
           {
-            "Ref": "subnetd13d0289"
+            "Ref": "PcfPublicSubnet1"
           }
         ],
         "HealthCheck": {
@@ -374,7 +375,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "sgsshelbsecuritygroup"
+            "Ref": "PcfSshElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -387,15 +388,15 @@
         ]
       }
     },
-    "elbnickterraformtcpelb": {
+    "PcfElbTcp": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
           {
-            "Ref": "subnet7bb05f1c"
+            "Ref": "PcfPublicSubnet0"
           },
           {
-            "Ref": "subnetd13d0289"
+            "Ref": "PcfPublicSubnet1"
           }
         ],
         "HealthCheck": {
@@ -415,7 +416,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "sgtcpelbsecuritygroup"
+            "Ref": "PcfTcpElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -1022,15 +1023,15 @@
         ]
       }
     },
-    "elbnickterraformwebelb": {
+    "PcfElbWeb": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
           {
-            "Ref": "subnet7bb05f1c"
+            "Ref": "PcfPublicSubnet0"
           },
           {
-            "Ref": "subnetd13d0289"
+            "Ref": "PcfPublicSubnet1"
           }
         ],
         "HealthCheck": {
@@ -1050,7 +1051,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "sgelbsecuritygroup"
+            "Ref": "PcfElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -1083,15 +1084,15 @@
         ]
       }
     },
-    "elbnickterraformisosegelb": {
+    "PcfElbIso": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": [
           {
-            "Ref": "subnet7bb05f1c"
+            "Ref": "PcfPublicSubnet0"
           },
           {
-            "Ref": "subnetd13d0289"
+            "Ref": "PcfPublicSubnet1"
           }
         ],
         "HealthCheck": {
@@ -1111,7 +1112,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "sgisosegelbsecuritygroup"
+            "Ref": "PcfIsoElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -1144,25 +1145,25 @@
         ]
       }
     },
-    "eip1356649": {
+    "PcfEip1": {
       "Type": "AWS::EC2::EIP",
       "DependsOn": [
-        "gw1"
+        "PcfVpcGatewayAttachment1"
       ],
       "Properties": {
         "Domain": "vpc"
       }
     },
-    "eip525373243": {
+    "PcfEip2": {
       "Type": "AWS::EC2::EIP",
       "DependsOn": [
-        "gw1"
+        "PcfVpcGatewayAttachment1"
       ],
       "Properties": {
         "Domain": "vpc"
       }
     },
-    "instancei0ec3cce20b3e024df": {
+    "PcfNatInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "DisableApiTermination": "false",
@@ -1181,7 +1182,7 @@
             "DeleteOnTermination": "true",
             "DeviceIndex": 0,
             "SubnetId": {
-              "Ref": "subnet7bb05f1c"
+              "Ref": "PcfPublicSubnet0"
             },
             "PrivateIpAddresses": [
               {
@@ -1191,14 +1192,14 @@
             ],
             "GroupSet": [
               {
-                "Ref": "sgnatsecuritygroup"
+                "Ref": "PcfNatSecurityGroup"
               }
             ]
           }
         ]
       }
     },
-    "instancei05ae089c8654cb911": {
+    "PcfOpsManInstance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
         "BlockDeviceMappings": [
@@ -1228,7 +1229,7 @@
             "DeleteOnTermination": "true",
             "DeviceIndex": 0,
             "SubnetId": {
-              "Ref": "subnet7bb05f1c"
+              "Ref": "PcfPublicSubnet0"
             },
             "PrivateIpAddresses": [
               {
@@ -1238,14 +1239,14 @@
             ],
             "GroupSet": [
               {
-                "Ref": "sgopsmanagersecuritygroup"
+                "Ref": "PcfOpsManSecurityGroup"
               }
             ]
           }
         ]
       }
     },
-    "s3nickterraformbuildpacksbucket": {
+    "PcfBuildpacksBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -1260,7 +1261,7 @@
         ]
       }
     },
-    "s3nickterraformdropletsbucket": {
+    "PcfDropletsBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -1275,7 +1276,7 @@
         ]
       }
     },
-    "s3nickterraformopsmanagerbucket": {
+    "PcfOpsManBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -1290,7 +1291,7 @@
         ]
       }
     },
-    "s3nickterraformpackagesbucket": {
+    "PcfPackagesBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -1305,7 +1306,7 @@
         ]
       }
     },
-    "s3nickterraformresourcesbucket": {
+    "PcfResourcesBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
@@ -1320,16 +1321,16 @@
         ]
       }
     },
-    "dbsubnetnickterraformdbsubnetgroup": {
+    "PcfDbSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
         "DBSubnetGroupDescription": "RDS Subnet Group",
         "SubnetIds": [
           {
-            "Ref": "subnetb0b659d7"
+            "Ref": "PcfRDSSubnet0"
           },
           {
-            "Ref": "subnet3c3e0164"
+            "Ref": "PcfRDSSubnet1"
           }
         ],
         "Tags": [
@@ -1340,12 +1341,12 @@
         ]
       }
     },
-    "sgvmssecuritygroup": {
+    "PcfVmsSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "VMs Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1355,12 +1356,12 @@
         ]
       }
     },
-    "sgopsmanagersecuritygroup": {
+    "PcfOpsManSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Ops Manager Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1370,12 +1371,12 @@
         ]
       }
     },
-    "sgisosegelbsecuritygroup": {
+    "PcfIsoElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Isoseg ELB Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1385,12 +1386,12 @@
         ]
       }
     },
-    "sgelbsecuritygroup": {
+    "PcfElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "ELB Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1400,12 +1401,12 @@
         ]
       }
     },
-    "sgmysqlsecuritygroup": {
+    "PcfMysqlSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "MySQL Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1415,12 +1416,12 @@
         ]
       }
     },
-    "sgnatsecuritygroup": {
+    "PcfNatSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "NAT Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1430,12 +1431,12 @@
         ]
       }
     },
-    "sgsshelbsecuritygroup": {
+    "PcfSshElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "ELB SSH Security Group",
+        "GroupDescription": "SSH ELB Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1445,12 +1446,12 @@
         ]
       }
     },
-    "sgtcpelbsecuritygroup": {
+    "PcfTcpElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "ELB TCP Security Group",
+        "GroupDescription": "TCP ELB Security Group",
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "Tags": [
           {
@@ -1460,7 +1461,7 @@
         ]
       }
     },
-    "acl1": {
+    "PcfAclEntry1": {
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
@@ -1469,11 +1470,11 @@
         "RuleAction": "allow",
         "RuleNumber": "100",
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         }
       }
     },
-    "acl2": {
+    "PcfAclEntry2": {
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
@@ -1481,310 +1482,310 @@
         "RuleAction": "allow",
         "RuleNumber": "100",
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         }
       }
     },
-    "subnetacl1": {
+    "PcfSubnetAclAssoc1": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet7bb05f1c"
+          "Ref": "PcfPublicSubnet0"
         }
       }
     },
-    "subnetacl2": {
+    "PcfSubnetAclAssoc2": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet38417e60"
+          "Ref": "PcfERTSubnet1"
         }
       }
     },
-    "subnetacl3": {
+    "PcfSubnetAclAssoc3": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnetb0b659d7"
+          "Ref": "PcfRDSSubnet0"
         }
       }
     },
-    "subnetacl4": {
+    "PcfSubnetAclAssoc4": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnete4b05f83"
+          "Ref": "PcfServicesSubnet0"
         }
       }
     },
-    "subnetacl5": {
+    "PcfSubnetAclAssoc5": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnetd13d0289"
+          "Ref": "PcfPublicSubnet1"
         }
       }
     },
-    "subnetacl6": {
+    "PcfSubnetAclAssoc6": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet07417e5f"
+          "Ref": "PcfServicesSubnet1"
         }
       }
     },
-    "subnetacl7": {
+    "PcfSubnetAclAssoc7": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet3c3e0164"
+          "Ref": "PcfRDSSubnet1"
         }
       }
     },
-    "subnetacl8": {
+    "PcfSubnetAclAssoc8": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet06417e5e"
+          "Ref": "PcfManagementSubnet1"
         }
       }
     },
-    "subnetacl9": {
+    "PcfSubnetAclAssoc9": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnetd4b45bb3"
+          "Ref": "PcfManagementSubnet0"
         }
       }
     },
-    "subnetacl10": {
+    "PcfSubnetAclAssoc10": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "acl51383e35"
+          "Ref": "PcfNetworkAcl"
         },
         "SubnetId": {
-          "Ref": "subnet33b15e54"
+          "Ref": "PcfERTSubnet0"
         }
       }
     },
-    "gw1": {
+    "PcfVpcGatewayAttachment1": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "InternetGatewayId": {
-          "Ref": "igw5914e93d"
+          "Ref": "PcfInternetGateway"
         }
       }
     },
-    "subnetroute1": {
+    "PcfSubnetRouteTableAssoc1": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb00041464"
+          "Ref": "PcfRouteTable1"
         },
         "SubnetId": {
-          "Ref": "subnete4b05f83"
+          "Ref": "PcfServicesSubnet0"
         }
       }
     },
-    "subnetroute2": {
+    "PcfSubnetRouteTableAssoc2": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb00041464"
+          "Ref": "PcfRouteTable1"
         },
         "SubnetId": {
-          "Ref": "subnet33b15e54"
+          "Ref": "PcfERTSubnet0"
         }
       }
     },
-    "subnetroute3": {
+    "PcfSubnetRouteTableAssoc3": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb00041464"
+          "Ref": "PcfRouteTable1"
         },
         "SubnetId": {
-          "Ref": "subnetd4b45bb3"
+          "Ref": "PcfManagementSubnet0"
         }
       }
     },
-    "subnetroute4": {
+    "PcfSubnetRouteTableAssoc4": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb6e07170a"
+          "Ref": "PcfRouteTable2"
         },
         "SubnetId": {
-          "Ref": "subnetd13d0289"
+          "Ref": "PcfPublicSubnet1"
         }
       }
     },
-    "subnetroute5": {
+    "PcfSubnetRouteTableAssoc5": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb6e07170a"
+          "Ref": "PcfRouteTable2"
         },
         "SubnetId": {
-          "Ref": "subnet7bb05f1c"
+          "Ref": "PcfPublicSubnet0"
         }
       }
     },
-    "subnetroute7": {
+    "PcfSubnetRouteTableAssoc7": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb2b06164f"
+          "Ref": "PcfRouteTable4"
         },
         "SubnetId": {
-          "Ref": "subnet07417e5f"
+          "Ref": "PcfServicesSubnet1"
         }
       }
     },
-    "subnetroute8": {
+    "PcfSubnetRouteTableAssoc8": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb2b06164f"
+          "Ref": "PcfRouteTable4"
         },
         "SubnetId": {
-          "Ref": "subnet06417e5e"
+          "Ref": "PcfManagementSubnet1"
         }
       }
     },
-    "subnetroute9": {
+    "PcfSubnetRouteTableAssoc9": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
         "RouteTableId": {
-          "Ref": "rtb2b06164f"
+          "Ref": "PcfRouteTable4"
         },
         "SubnetId": {
-          "Ref": "subnet38417e60"
+          "Ref": "PcfERTSubnet1"
         }
       }
     },
-    "route1": {
+    "PcfRoute1": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "rtb00041464"
+          "Ref": "PcfRouteTable1"
         },
         "InstanceId": {
-          "Ref": "instancei0ec3cce20b3e024df"
+          "Ref": "PcfNatInstance"
         }
       }
     },
-    "route2": {
+    "PcfRoute2": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "rtb6e07170a"
+          "Ref": "PcfRouteTable2"
         },
         "GatewayId": {
-          "Ref": "igw5914e93d"
+          "Ref": "PcfInternetGateway"
         }
       },
-      "DependsOn": "gw1"
+      "DependsOn": "PcfVpcGatewayAttachment1"
     },
-    "route3": {
+    "PcfRoute3": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "rtb2b06164f"
+          "Ref": "PcfRouteTable4"
         },
         "InstanceId": {
-          "Ref": "instancei0ec3cce20b3e024df"
+          "Ref": "PcfNatInstance"
         }
       }
     },
-    "dchpassoc1": {
+    "PcfDhcpAssoc1": {
       "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
       "Properties": {
         "VpcId": {
-          "Ref": "vpca0115ec4"
+          "Ref": "PcfVPC"
         },
         "DhcpOptionsId": {
-          "Ref": "dopta91de6cc"
+          "Ref": "PcfDHCPOptions"
         }
       }
     },
-    "assoc1": {
+    "PcfEipAssoc1": {
       "Type": "AWS::EC2::EIPAssociation",
       "Properties": {
         "AllocationId": {
           "Fn::GetAtt": [
-            "eip525373243",
+            "PcfEip2",
             "AllocationId"
           ]
         },
         "InstanceId": {
-          "Ref": "instancei0ec3cce20b3e024df"
+          "Ref": "PcfNatInstance"
         }
       }
     },
-    "assoc2": {
+    "PcfEipAssoc2": {
       "Type": "AWS::EC2::EIPAssociation",
       "Properties": {
         "AllocationId": {
           "Fn::GetAtt": [
-            "eip1356649",
+            "PcfEip1",
             "AllocationId"
           ]
         },
         "InstanceId": {
-          "Ref": "instancei05ae089c8654cb911"
+          "Ref": "PcfOpsManInstance"
         }
       }
     },
-    "ingress1": {
+    "PcfIngressRule1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgvmssecuritygroup"
+          "Ref": "PcfVmsSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "ingress2": {
+    "PcfIngressRule2": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -1792,11 +1793,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress3": {
+    "PcfIngressRule3": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "22",
@@ -1804,11 +1805,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress4": {
+    "PcfIngressRule4": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "25555",
@@ -1816,11 +1817,11 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "ingress5": {
+    "PcfIngressRule5": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "6868",
@@ -1828,11 +1829,11 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "ingress6": {
+    "PcfIngressRule6": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "443",
@@ -1840,11 +1841,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress7": {
+    "PcfIngressRule7": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgisosegelbsecuritygroup"
+          "Ref": "PcfIsoElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -1852,11 +1853,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress8": {
+    "PcfIngressRule8": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgisosegelbsecuritygroup"
+          "Ref": "PcfIsoElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "4443",
@@ -1864,11 +1865,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress9": {
+    "PcfIngressRule9": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgisosegelbsecuritygroup"
+          "Ref": "PcfIsoElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "443",
@@ -1876,11 +1877,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress10": {
+    "PcfIngressRule10": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgelbsecuritygroup"
+          "Ref": "PcfElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -1888,11 +1889,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress11": {
+    "PcfIngressRule11": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgelbsecuritygroup"
+          "Ref": "PcfElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "4443",
@@ -1900,11 +1901,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress12": {
+    "PcfIngressRule12": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgelbsecuritygroup"
+          "Ref": "PcfElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "443",
@@ -1912,11 +1913,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress13": {
+    "PcfIngressRule13": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgmysqlsecuritygroup"
+          "Ref": "PcfMysqlSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "3306",
@@ -1924,21 +1925,21 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "ingress14": {
+    "PcfIngressRule14": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgnatsecuritygroup"
+          "Ref": "PcfNatSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "ingress15": {
+    "PcfIngressRule15": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgsshelbsecuritygroup"
+          "Ref": "PcfSshElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "2222",
@@ -1946,11 +1947,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ingress16": {
+    "PcfIngressRule16": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgtcpelbsecuritygroup"
+          "Ref": "PcfTcpElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "1024",
@@ -1958,86 +1959,85 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress1": {
+    "PcfEgressRule1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgvmssecuritygroup"
+          "Ref": "PcfVmsSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress2": {
+    "PcfEgressRule2": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgopsmanagersecuritygroup"
+          "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress3": {
+    "PcfEgressRule3": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgisosegelbsecuritygroup"
+          "Ref": "PcfIsoElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress4": {
+    "PcfEgressRule4": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgelbsecuritygroup"
+          "Ref": "PcfElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress5": {
+    "PcfEgressRule5": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgmysqlsecuritygroup"
+          "Ref": "PcfMysqlSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "egress6": {
+    "PcfEgressRule6": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgnatsecuritygroup"
+          "Ref": "PcfNatSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress7": {
+    "PcfEgressRule7": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgsshelbsecuritygroup"
+          "Ref": "PcfSshElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "egress8": {
+    "PcfEgressRule8": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "sgtcpelbsecuritygroup"
+          "Ref": "PcfTcpElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     }
-  },
-  "Description": "CloudFormer template based on https://github.com/pivotal-cf/terraforming-aws"
+  }
 }
