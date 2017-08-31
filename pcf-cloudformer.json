@@ -1,5 +1,14 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Conditions": {
+    "CreateRDS": {
+      "Fn::And":[
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "RDSDBName"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "RDSUsername"}, "" ]}]},
+        { "Fn::Not": [ { "Fn::Equals": [ { "Ref": "RDSPassword"}, "" ]}]}
+      ]
+    }
+  },
   "Description": "CloudFormation template for configuring Pivotal Cloud Foundry on AWS",
   "Mappings": {
     "NATRegionToAmiMap" : {
@@ -57,6 +66,22 @@
     "OpsManSSHKeyPairName" : {
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Description": "Select the SSH keypair to use for the Ops Manager VM"
+    },
+    "RDSDBName" : {
+      "Type": "String",
+      "AllowedPattern": "(.{4,}|^$)",
+      "Default": "bosh",
+      "Description": "RDS database name (leave blank to skip RDS)"
+    },
+    "RDSUsername" : {
+      "Type": "String",
+      "Description": "RDS username (leave blank to skip RDS)"
+    },
+    "RDSPassword" : {
+      "Type": "String",
+      "NoEcho": "true",
+      "AllowedPattern": "(.{8,}|^$)",
+      "Description": "RDS password (leave blank to skip RDS, must be 8+ chars)"
     },
     "ServerCertNameERT" : {
       "Type": "String",
@@ -374,6 +399,25 @@
             "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet-az3" ] ] }
           }
         ]
+      }
+    },
+    "PcfRds": {
+      "Type": "AWS::RDS::DBInstance",
+      "Condition": "CreateRDS",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "DBInstanceClass": "db.m4.large",
+        "DBInstanceIdentifier": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds" ] ] },
+        "Engine": "MySQL",
+        "EngineVersion": "5.7.17",
+        "MultiAZ": "True",
+        "DBName": {"Ref": "RDSDBName"},
+        "Iops": "1000",
+        "MasterUsername": {"Ref": "RDSUsername"},
+        "MasterUserPassword": {"Ref": "RDSPassword"},
+        "PubliclyAccessible": "False",
+        "VPCSecurityGroups": [{"Ref": "PcfRdsSecurityGroup"}],
+        "DBSubnetGroupName": {"Ref": "PcfRdsSubnetGroup"}
       }
     },
     "PcfServicesSubnetAZ1": {
@@ -1463,7 +1507,7 @@
         ]
       }
     },
-    "PcfDbSubnetGroup": {
+    "PcfRdsSubnetGroup": {
       "Type": "AWS::RDS::DBSubnetGroup",
       "Properties": {
         "DBSubnetGroupDescription": "RDS Subnet Group",
@@ -1473,12 +1517,15 @@
           },
           {
             "Ref": "PcfRDSSubnetAZ2"
+          },
+          {
+            "Ref": "PcfRDSSubnetAZ3"
           }
         ],
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-db-subnet-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-subnet-group" ] ] }
           }
         ]
       }
@@ -1543,17 +1590,17 @@
         ]
       }
     },
-    "PcfMysqlSecurityGroup": {
+    "PcfRdsSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "MySQL Security Group",
+        "GroupDescription": "RDS Security Group",
         "VpcId": {
           "Ref": "PcfVPC"
         },
         "Tags": [
           {
             "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-mysql-security-group" ] ] }
+            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds-security-group" ] ] }
           }
         ]
       }
@@ -2158,7 +2205,7 @@
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "PcfMysqlSecurityGroup"
+          "Ref": "PcfRdsSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "3306",
@@ -2244,7 +2291,7 @@
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "PcfMysqlSecurityGroup"
+          "Ref": "PcfRdsSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "10.0.0.0/16"
