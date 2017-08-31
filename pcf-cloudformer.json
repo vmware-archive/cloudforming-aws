@@ -2327,5 +2327,67 @@
         "CidrIp": "0.0.0.0/0"
       }
     }
+  },
+  "Outputs": {
+    "PcfVpc": {
+      "Value": {"Ref": "PcfVPC"}
+    },
+    "PcfOpsManagerS3Bucket": {
+      "Value": {"Ref": "PcfOpsManBucket"}
+    },
+    "PcfElasticRuntimeS3BuildpacksBucket": {
+      "Value": {"Ref": "PcfBuildpacksBucket"}
+    },
+    "PcfElasticRuntimeS3DropletsBucket": {
+      "Value": {"Ref": "PcfDropletsBucket"}
+    },
+    "PcfElasticRuntimeS3PackagesBucket": {
+      "Value": {"Ref": "PcfPackagesBucket"}
+    },
+    "PcfElasticRuntimeS3ResourcesBucket": {
+      "Value": {"Ref": "PcfResourcesBucket"}
+    },
+    "PcfERTSubnetAZ1Id": {
+      "Value": {"Ref": "PcfERTSubnetAZ1"}
+    },
+    "PcfERTSubnetAZ2Id": {
+      "Value": {"Ref": "PcfERTSubnetAZ2"}
+    },
+    "PcfERTSubnetAZ3Id": {
+      "Value": {"Ref": "PcfERTSubnetAZ3"}
+    },
+    "PcfERTSubnetAZ1AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfERTSubnetAZ1", "AvailabilityZone" ] }
+    },
+    "PcfERTSubnetAZ2AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfERTSubnetAZ2", "AvailabilityZone" ] }
+    },
+    "PcfERTSubnetAZ3AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfERTSubnetAZ3", "AvailabilityZone" ] }
+    },
+    "PcfRdsAddress": {
+      "Value": { "Fn::GetAtt": [ "PcfRds", "Endpoint.Address"]}
+    },
+    "PcfRdsPort": {
+      "Value": {"Fn::GetAtt": [ "PcfRds", "Endpoint.Port"] }
+    },
+    "PcfRdsUsername": {
+      "Value": {"Ref": "RDSUsername"}
+    },
+    "PcfRdsPassword": {
+      "Value": {"Ref": "RDSPassword"}
+    },
+    "PcfRdsDBName": {
+      "Value": {"Ref": "RDSDBName"}
+    },
+    "PcfElbDnsName": {
+      "Value": { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
+    },
+    "PcfElbSshDnsName": {
+      "Value": { "Fn::GetAtt": [ "PcfElbSsh", "DNSName"]}
+    },
+    "PcfElbTcpDnsName": {
+      "Value": { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
+    }
   }
 }
