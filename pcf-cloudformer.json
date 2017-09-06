@@ -114,7 +114,7 @@
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-web-elb-1244981103.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
+              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
             ]
           }
         ]
@@ -152,7 +152,7 @@
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-web-elb-1244981103.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
+              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
             ]
           }
         ]
@@ -170,7 +170,7 @@
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ssh-elb-1869042241.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
+              { "Fn::GetAtt": [ "PcfElbSsh", "DNSName"]}
             ]
           }
         ]
@@ -188,7 +188,7 @@
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-tcp-elb-1786786484.", { "Ref": "AWS::Region" }, ".elb.amazonaws.com" ] ] }
+              { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
             ]
           }
         ]
