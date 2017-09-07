@@ -71,25 +71,25 @@
       "Type": "String",
       "AllowedPattern": "(.{4,}|^$)",
       "Default": "bosh",
-      "Description": "RDS database name (leave blank to skip RDS)"
+      "Description": "BOSH database name (leave blank to skip RDS)"
     },
     "RDSUsername" : {
       "Type": "String",
-      "Description": "RDS username (leave blank to skip RDS)"
+      "Description": "BOSH database username (leave blank to skip RDS)"
     },
     "RDSPassword" : {
       "Type": "String",
       "NoEcho": "true",
       "AllowedPattern": "(.{8,}|^$)",
-      "Description": "RDS password (leave blank to skip RDS, must be 8+ chars)"
+      "Description": "BOSH database password (leave blank to skip RDS, must be 8+ chars)"
     },
-    "ERTServerCertARN" : {
+    "ERTCertificateARN" : {
       "Type": "String",
-      "Description": "Enter the ARN of the server certificate for the ERT"
+      "Description": "ARN for pre-uploaded certificate for the ERT"
     },
-    "ServerCertNameIso" : {
+    "IsoCertficateARN" : {
       "Type": "String",
-      "Description": "Select the server certificate name for the Isolation Segment"
+      "Description": "ARN for pre-uploaded certificate for the Isolation Segment"
     }
   },
   "Resources": {
@@ -1143,7 +1143,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Ref": "ERTServerCertARN" },
+            "SSLCertificateId": {"Ref": "ERTCertficateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1153,7 +1153,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Ref": "ERTServerCertARN" },
+            "SSLCertificateId": {"Ref": "ERTCertficateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1213,7 +1213,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameIso" } ] ] },
+            "SSLCertificateId": {"Ref": "IsoCertificateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1223,7 +1223,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameIso" } ] ] },
+            "SSLCertificateId": {"Ref": "IsoCertificateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
