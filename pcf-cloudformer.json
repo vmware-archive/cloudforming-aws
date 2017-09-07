@@ -87,7 +87,7 @@
       "Type": "String",
       "Description": "ARN for pre-uploaded certificate for the ERT"
     },
-    "IsoCertficateARN" : {
+    "IsoCertificateARN" : {
       "Type": "String",
       "Description": "ARN for pre-uploaded certificate for the Isolation Segment"
     }
@@ -1143,7 +1143,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Ref": "ERTCertficateARN" },
+            "SSLCertificateId": {"Ref": "ERTCertificateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1153,7 +1153,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Ref": "ERTCertficateARN" },
+            "SSLCertificateId": {"Ref": "ERTCertificateARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
