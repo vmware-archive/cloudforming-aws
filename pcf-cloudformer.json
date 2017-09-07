@@ -83,9 +83,9 @@
       "AllowedPattern": "(.{8,}|^$)",
       "Description": "RDS password (leave blank to skip RDS, must be 8+ chars)"
     },
-    "ServerCertNameERT" : {
+    "ERTServerCertARN" : {
       "Type": "String",
-      "Description": "Enter the server certificate name for the ERT"
+      "Description": "Enter the ARN of the server certificate for the ERT"
     },
     "ServerCertNameIso" : {
       "Type": "String",
@@ -1143,7 +1143,7 @@
             "LoadBalancerPort": "4443",
             "Protocol": "SSL",
             "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameERT" } ] ] },
+            "SSLCertificateId": {"Ref": "ERTServerCertARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
@@ -1153,7 +1153,7 @@
             "LoadBalancerPort": "443",
             "Protocol": "HTTPS",
             "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Fn::Join": ["", ["arn:aws:iam::", {"Ref": "AWS::AccountId"}, ":server-certificate/", {"Ref": "ServerCertNameERT" } ] ] },
+            "SSLCertificateId": {"Ref": "ERTServerCertARN" },
             "PolicyNames": [
               "ELBSecurityPolicy-2016-08"
             ]
