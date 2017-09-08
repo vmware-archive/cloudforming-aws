@@ -1294,7 +1294,17 @@
         "ImageId": { "Ref": "OpsManAMI" },
         "InstanceType": "m3.large",
         "KeyName": { "Ref": "OpsManSSHKeyPairName" },
+        "BlockDeviceMappings": [
+          {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+              "VolumeType": "gp2",
+              "VolumeSize": "150"
+            }
+          }
+        ],
         "Monitoring": "false",
+        "SourceDestCheck": "false",
         "Tags": [
           {
             "Key": "Name",
