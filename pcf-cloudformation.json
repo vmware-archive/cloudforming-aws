@@ -93,6 +93,107 @@
     }
   },
   "Resources": {
+    "PcfHostedZone": {
+      "Type": "AWS::Route53::HostedZone",
+      "Properties": {
+        "Name": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+        "HostedZoneConfig": {
+          "Comment": "Created by CloudFormation"
+        }
+      }
+    },
+    "PcfAppsCNAME": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "PcfHostedZone"
+        },
+        "RecordSets": [
+          {
+            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
+            ]
+          }
+        ]
+      }
+    },
+    "PcfARecord": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "PcfHostedZone"
+        },
+        "RecordSets": [
+          {
+            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Type": "A",
+            "TTL": "300",
+            "ResourceRecords": [
+              {
+                "Ref": "PcfEip1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "PcfSysCNAME": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "PcfHostedZone"
+        },
+        "RecordSets": [
+          {
+            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
+            ]
+          }
+        ]
+      }
+    },
+    "PcfSysSshCNAME": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "PcfHostedZone"
+        },
+        "RecordSets": [
+          {
+            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              { "Fn::GetAtt": [ "PcfElbSsh", "DNSName"]}
+            ]
+          }
+        ]
+      }
+    },
+    "PcfTcpCNAME": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {
+          "Ref": "PcfHostedZone"
+        },
+        "RecordSets": [
+          {
+            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Type": "CNAME",
+            "TTL": "300",
+            "ResourceRecords": [
+              { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
+            ]
+          }
+        ]
+      }
+    },
     "PcfVPC": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
