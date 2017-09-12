@@ -63,6 +63,11 @@
       "Type": "String",
       "Description": "Exampe: ami-6e799016"
     },
+    "OpsManIngressCidr" : {
+      "Type": "String",
+      "Default": "0.0.0.0/0",
+      "Description": "Allow ingress traffic to the Ops Manager VM from this CIDR range"
+    },
     "OpsManSSHKeyPairName" : {
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Description": "Select the SSH keypair to use for the Ops Manager VM"
@@ -2092,7 +2097,9 @@
         "IpProtocol": "tcp",
         "FromPort": "80",
         "ToPort": "80",
-        "CidrIp": "0.0.0.0/0"
+        "CidrIp": {
+          "Ref": "OpsManIngressCidr"
+        }
       }
     },
     "PcfIngressRule3": {
@@ -2104,7 +2111,9 @@
         "IpProtocol": "tcp",
         "FromPort": "22",
         "ToPort": "22",
-        "CidrIp": "0.0.0.0/0"
+        "CidrIp": {
+          "Ref": "OpsManIngressCidr"
+        }
       }
     },
     "PcfIngressRule4": {
@@ -2140,7 +2149,9 @@
         "IpProtocol": "tcp",
         "FromPort": "443",
         "ToPort": "443",
-        "CidrIp": "0.0.0.0/0"
+        "CidrIp": {
+          "Ref": "OpsManIngressCidr"
+        }
       }
     },
     "PcfIngressRule7": {
