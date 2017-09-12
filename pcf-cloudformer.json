@@ -1296,7 +1296,7 @@
         "KeyName": { "Ref": "OpsManSSHKeyPairName" },
         "BlockDeviceMappings": [
           {
-            "DeviceName": "/dev/sda1",
+            "DeviceName": "/dev/xvda",
             "Ebs": {
               "VolumeType": "gp2",
               "VolumeSize": "150"
@@ -2566,6 +2566,24 @@
     "PcfERTSubnetAZ3AvailabilityZone": {
       "Value": { "Fn::GetAtt" : [ "PcfERTSubnetAZ3", "AvailabilityZone" ] }
     },
+    "PcfManagementSubnetAZ1AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ1", "AvailabilityZone" ] }
+    },
+    "PcfManagementSubnetAZ1": {
+      "Value": {"Ref": "PcfManagementSubnetAZ1"}
+    },
+    "PcfManagementSubnetAZ2AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ2", "AvailabilityZone" ] }
+    },
+    "PcfManagementSubnetAZ2": {
+      "Value": {"Ref": "PcfManagementSubnetAZ2"}
+    },
+    "PcfManagementSubnetAZ3AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ3", "AvailabilityZone" ] }
+    },
+    "PcfManagementSubnetAZ3": {
+      "Value": {"Ref": "PcfManagementSubnetAZ3"}
+    },
     "PcfRdsAddress": {
       "Value": { "Fn::GetAtt": [ "PcfRds", "Endpoint.Address"]}
     },
@@ -2581,7 +2599,7 @@
     "PcfRdsDBName": {
       "Value": {"Ref": "RDSDBName"}
     },
-    "PcfElbDnsName": {
+    "PcfElbWebDnsName": {
       "Value": { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
     },
     "PcfElbSshDnsName": {
