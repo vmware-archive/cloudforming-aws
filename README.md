@@ -35,3 +35,9 @@ will be deploying your cloudformation.  Then, create a key pair:
 ```
 aws ec2 create-key-pair --key-name ${pcf-env-id}
 ```
+
+### Hosted zones
+
+The `hosted-zones.json` template can be used to configure DNS after the initial pcf stack
+is created with `pcf-cloudformation.json`. It's helpful for testing, but is not part
+of the official product release.

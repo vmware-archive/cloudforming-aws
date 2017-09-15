@@ -2,17 +2,33 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "CloudFormation template for creating a hosted zone for an environment on AWS",
   "Parameters" : {
-    "EnvironmentID" : {
+    "PcfDomain" : {
       "Type" : "String",
-      "Default" : "pcf-env-id",
-      "Description" : "Default: pcf-env-id"
+      "Default" : "pcf-env-id.infrastructure.cf-app.com",
+      "Description" : "Records will point to subdomains of this address."
+    },
+    "PcfElbWebDNSName" : {
+      "Type" : "String",
+      "Description" : "Output from pcf-cloudformation stack"
+    },
+    "PcfElbSshDNSName" : {
+      "Type" : "String",
+      "Description" : "Output from pcf-cloudformation stack"
+    },
+    "PcfElbTcpDNSName" : {
+      "Type" : "String",
+      "Description" : "Output from pcf-cloudformation stack"
+    },
+    "PcfOpsManIPAddress" : {
+      "Type" : "String",
+      "Description" : "Output from pcf-cloudformation stack"
     }
   },
   "Resources": {
     "PcfHostedZone": {
       "Type": "AWS::Route53::HostedZone",
       "Properties": {
-        "Name": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+        "Name": { "Ref": "PcfDomain" },
         "HostedZoneConfig": {
           "Comment": "Created by CloudFormation"
         }
@@ -26,11 +42,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["\\052.apps.", {"Ref": "PcfDomain" } ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
+              { "Ref": "PcfElbWebDNSName" }
             ]
           }
         ]
@@ -44,13 +60,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["pcf.", {"Ref": "PcfDomain" } ] ] },
             "Type": "A",
             "TTL": "300",
             "ResourceRecords": [
-              {
-                "Ref": "PcfEip1"
-              }
+              { "Ref": "PcfOpsManIPAddress" }
             ]
           }
         ]
@@ -64,11 +78,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["\\052.sys.", {"Ref": "PcfDomain" } ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
+              { "Ref": "PcfElbWebDNSName" }
             ]
           }
         ]
@@ -82,11 +96,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["ssh.sys.", {"Ref": "PcfDomain" } ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              { "Fn::GetAtt": [ "PcfElbSsh", "DNSName"]}
+              { "Ref": "PcfElbSshDNSName" }
             ]
           }
         ]
@@ -100,11 +114,11 @@
         },
         "RecordSets": [
           {
-            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "EnvironmentID" }, ".infrastructure.cf-app.com." ] ] },
+            "Name": {"Fn::Join": ["", ["tcp.", {"Ref": "PcfDomain" } ] ] },
             "Type": "CNAME",
             "TTL": "300",
             "ResourceRecords": [
-              { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
+              { "Ref": "PcfElbTcpDNSName" }
             ]
           }
         ]
