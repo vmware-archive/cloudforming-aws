@@ -75,18 +75,17 @@
     "RDSDBName" : {
       "Type": "String",
       "AllowedPattern": "(.{4,}|^$)",
-      "Default": "bosh",
-      "Description": "BOSH database name (leave blank to skip RDS)"
+      "Description": "RDS database name (leave blank to skip RDS)"
     },
     "RDSUsername" : {
       "Type": "String",
-      "Description": "BOSH database username (leave blank to skip RDS)"
+      "Description": "RDS database username (leave blank to skip RDS)"
     },
     "RDSPassword" : {
       "Type": "String",
       "NoEcho": "true",
       "AllowedPattern": "(.{8,}|^$)",
-      "Description": "BOSH database password (leave blank to skip RDS, must be 8+ chars)"
+      "Description": "RDS database password (leave blank to skip RDS, must be 8+ chars)"
     },
     "ERTCertificateARN" : {
       "Type": "String",
