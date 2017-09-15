@@ -90,10 +90,6 @@
     "ERTCertificateARN" : {
       "Type": "String",
       "Description": "ARN for pre-uploaded certificate for the ERT"
-    },
-    "IsoCertificateARN" : {
-      "Type": "String",
-      "Description": "ARN for pre-uploaded certificate for the Isolation Segment"
     }
   },
   "Resources": {
@@ -1171,71 +1167,7 @@
         ]
       }
     },
-    "PcfElbIso": {
-      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-      "Properties": {
-        "Subnets": [
-          {
-            "Ref": "PcfPublicSubnetAZ1"
-          },
-          {
-            "Ref": "PcfPublicSubnetAZ2"
-          },
-          {
-            "Ref": "PcfPublicSubnetAZ3"
-          }
-        ],
-        "HealthCheck": {
-          "HealthyThreshold": "6",
-          "Interval": "5",
-          "Target": "HTTP:8080/health",
-          "Timeout": "3",
-          "UnhealthyThreshold": "3"
-        },
-        "ConnectionDrainingPolicy": {
-          "Enabled": "false",
-          "Timeout": "300"
-        },
-        "ConnectionSettings": {
-          "IdleTimeout": "3600"
-        },
-        "CrossZone": "true",
-        "SecurityGroups": [
-          {
-            "Ref": "PcfIsoElbSecurityGroup"
-          }
-        ],
-        "Listeners": [
-          {
-            "InstancePort": "80",
-            "LoadBalancerPort": "80",
-            "Protocol": "HTTP",
-            "InstanceProtocol": "HTTP"
-          },
-          {
-            "InstancePort": "80",
-            "LoadBalancerPort": "4443",
-            "Protocol": "SSL",
-            "InstanceProtocol": "TCP",
-            "SSLCertificateId": {"Ref": "IsoCertificateARN" },
-            "PolicyNames": [
-              "ELBSecurityPolicy-2016-08"
-            ]
-          },
-          {
-            "InstancePort": "80",
-            "LoadBalancerPort": "443",
-            "Protocol": "HTTPS",
-            "InstanceProtocol": "HTTP",
-            "SSLCertificateId": {"Ref": "IsoCertificateARN" },
-            "PolicyNames": [
-              "ELBSecurityPolicy-2016-08"
-            ]
-          }
-        ]
-      }
-    },
-    "PcfEip1": {
+    "PcfEipOpsMan": {
       "Type": "AWS::EC2::EIP",
       "DependsOn": [
         "PcfVpcGatewayAttachment1"
@@ -1461,21 +1393,6 @@
           {
             "Key": "Name",
             "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-ops-manager-security-group" ] ] }
-          }
-        ]
-      }
-    },
-    "PcfIsoElbSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "Isoseg ELB Security Group",
-        "VpcId": {
-          "Ref": "PcfVPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-isoseg-elb-security-group" ] ] }
           }
         ]
       }
@@ -1967,7 +1884,7 @@
       "Properties": {
         "AllocationId": {
           "Fn::GetAtt": [
-            "PcfEip1",
+            "PcfEipOpsMan",
             "AllocationId"
           ]
         },
@@ -1976,7 +1893,7 @@
         }
       }
     },
-    "PcfIngressRule1": {
+    "PcfIngressRuleVms1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -1986,7 +1903,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfIngressRule2": {
+    "PcfIngressRuleOpsMan1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2000,7 +1917,7 @@
         }
       }
     },
-    "PcfIngressRule3": {
+    "PcfIngressRuleOpsMan2": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2014,7 +1931,7 @@
         }
       }
     },
-    "PcfIngressRule4": {
+    "PcfIngressRuleOpsMan3": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2026,7 +1943,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfIngressRule5": {
+    "PcfIngressRuleOpsMan4": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2038,7 +1955,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfIngressRule6": {
+    "PcfIngressRuleOpsMan5": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2052,43 +1969,7 @@
         }
       }
     },
-    "PcfIngressRule7": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfIsoElbSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "80",
-        "ToPort": "80",
-        "CidrIp": "0.0.0.0/0"
-      }
-    },
-    "PcfIngressRule8": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfIsoElbSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "4443",
-        "ToPort": "4443",
-        "CidrIp": "0.0.0.0/0"
-      }
-    },
-    "PcfIngressRule9": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfIsoElbSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "443",
-        "ToPort": "443",
-        "CidrIp": "0.0.0.0/0"
-      }
-    },
-    "PcfIngressRule10": {
+    "PcfIngressRuleElb1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2100,7 +1981,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfIngressRule11": {
+    "PcfIngressRuleElb2": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2112,7 +1993,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfIngressRule12": {
+    "PcfIngressRuleElb3": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2124,7 +2005,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfIngressRule13": {
+    "PcfIngressRuleRds1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2136,7 +2017,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfIngressRule14": {
+    "PcfIngressRuleNat1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2146,7 +2027,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfIngressRule15": {
+    "PcfIngressRuleSshElb1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2158,7 +2039,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfIngressRule16": {
+    "PcfIngressRuleTcpElb1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
@@ -2170,7 +2051,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule1": {
+    "PcfEgressRuleVms1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2180,7 +2061,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule2": {
+    "PcfEgressRuleOpsMan1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2190,17 +2071,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule3": {
-      "Type": "AWS::EC2::SecurityGroupEgress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfIsoElbSecurityGroup"
-        },
-        "IpProtocol": "-1",
-        "CidrIp": "0.0.0.0/0"
-      }
-    },
-    "PcfEgressRule4": {
+    "PcfEgressRuleElb1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2210,7 +2081,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule5": {
+    "PcfEgressRuleRds1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2220,7 +2091,7 @@
         "CidrIp": "10.0.0.0/16"
       }
     },
-    "PcfEgressRule6": {
+    "PcfEgressRuleNat1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2230,7 +2101,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule7": {
+    "PcfEgressRuleSshElb1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2240,7 +2111,7 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "PcfEgressRule8": {
+    "PcfEgressRuleTcpElb1": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
@@ -2622,6 +2493,9 @@
     },
     "PcfElbTcpDnsName": {
       "Value": { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
+    },
+    "PcfOpsManIPAddress": {
+      "Value": { "Fn::GetAtt": [ "PcfOpsManInstance", "PublicIp"]}
     }
   }
 }
