@@ -2414,6 +2414,9 @@
     "PcfIamUserSecretAccessKey": {
       "Value": { "Fn::GetAtt": [ "PcfIamUserAccessKey", "SecretAccessKey"]}
     },
+    "PcfIamInstanceProfile": {
+      "Value": { "Ref": "PcfIamInstanceProfile" }
+    },
     "PcfOpsManagerS3Bucket": {
       "Value": {"Ref": "PcfOpsManBucket"}
     },
@@ -2429,13 +2432,13 @@
     "PcfElasticRuntimeS3ResourcesBucket": {
       "Value": {"Ref": "PcfResourcesBucket"}
     },
-    "PcfERTSubnetAZ1Id": {
+    "PcfERTSubnetAZ1": {
       "Value": {"Ref": "PcfERTSubnetAZ1"}
     },
-    "PcfERTSubnetAZ2Id": {
+    "PcfERTSubnetAZ2": {
       "Value": {"Ref": "PcfERTSubnetAZ2"}
     },
-    "PcfERTSubnetAZ3Id": {
+    "PcfERTSubnetAZ3": {
       "Value": {"Ref": "PcfERTSubnetAZ3"}
     },
     "PcfERTSubnetAZ1AvailabilityZone": {
@@ -2447,23 +2450,44 @@
     "PcfERTSubnetAZ3AvailabilityZone": {
       "Value": { "Fn::GetAtt" : [ "PcfERTSubnetAZ3", "AvailabilityZone" ] }
     },
-    "PcfManagementSubnetAZ1AvailabilityZone": {
-      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ1", "AvailabilityZone" ] }
-    },
     "PcfManagementSubnetAZ1": {
       "Value": {"Ref": "PcfManagementSubnetAZ1"}
-    },
-    "PcfManagementSubnetAZ2AvailabilityZone": {
-      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ2", "AvailabilityZone" ] }
     },
     "PcfManagementSubnetAZ2": {
       "Value": {"Ref": "PcfManagementSubnetAZ2"}
     },
+    "PcfManagementSubnetAZ3": {
+      "Value": {"Ref": "PcfManagementSubnetAZ3"}
+    },
+    "PcfManagementSubnetAZ1AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ1", "AvailabilityZone" ] }
+    },
+    "PcfManagementSubnetAZ2AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ2", "AvailabilityZone" ] }
+    },
     "PcfManagementSubnetAZ3AvailabilityZone": {
       "Value": { "Fn::GetAtt" : [ "PcfManagementSubnetAZ3", "AvailabilityZone" ] }
     },
-    "PcfManagementSubnetAZ3": {
-      "Value": {"Ref": "PcfManagementSubnetAZ3"}
+    "PcfServicesSubnetAZ1": {
+      "Value": {"Ref": "PcfServicesSubnetAZ1"}
+    },
+    "PcfServicesSubnetAZ2": {
+      "Value": {"Ref": "PcfServicesSubnetAZ2"}
+    },
+    "PcfServicesSubnetAZ3": {
+      "Value": {"Ref": "PcfServicesSubnetAZ3"}
+    },
+    "PcfServicesSubnetAZ1AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfServicesSubnetAZ1", "AvailabilityZone" ] }
+    },
+    "PcfServicesSubnetAZ2AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfServicesSubnetAZ2", "AvailabilityZone" ] }
+    },
+    "PcfServicesSubnetAZ3AvailabilityZone": {
+      "Value": { "Fn::GetAtt" : [ "PcfServicesSubnetAZ3", "AvailabilityZone" ] }
+    },
+    "PcfVmsSecurityGroup": {
+      "Value": { "Ref" : "PcfVmsSecurityGroup" }
     },
     "PcfRdsAddress": {
       "Condition": "CreateRDS",
