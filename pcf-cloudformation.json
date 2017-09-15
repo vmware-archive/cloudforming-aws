@@ -1938,30 +1938,6 @@
           "Ref": "PcfOpsManSecurityGroup"
         },
         "IpProtocol": "tcp",
-        "FromPort": "25555",
-        "ToPort": "25555",
-        "CidrIp": "10.0.0.0/16"
-      }
-    },
-    "PcfIngressRuleOpsMan4": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfOpsManSecurityGroup"
-        },
-        "IpProtocol": "tcp",
-        "FromPort": "6868",
-        "ToPort": "6868",
-        "CidrIp": "10.0.0.0/16"
-      }
-    },
-    "PcfIngressRuleOpsMan5": {
-      "Type": "AWS::EC2::SecurityGroupIngress",
-      "Properties": {
-        "GroupId": {
-          "Ref": "PcfOpsManSecurityGroup"
-        },
-        "IpProtocol": "tcp",
         "FromPort": "443",
         "ToPort": "443",
         "CidrIp": {
