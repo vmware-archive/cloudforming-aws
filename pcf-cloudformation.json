@@ -2509,11 +2509,20 @@
       "Condition": "CreateRDS",
       "Value": {"Ref": "RDSDBName"}
     },
+    "PcfElbWebName": {
+      "Value": { "Ref": "PcfElbWeb" }
+    },
     "PcfElbWebDnsName": {
       "Value": { "Fn::GetAtt": [ "PcfElbWeb", "DNSName"]}
     },
+    "PcfElbSshName": {
+      "Value": { "Ref": "PcfElbSsh" }
+    },
     "PcfElbSshDnsName": {
       "Value": { "Fn::GetAtt": [ "PcfElbSsh", "DNSName"]}
+    },
+    "PcfElbTcpName": {
+      "Value": { "Ref": "PcfElbTcp" }
     },
     "PcfElbTcpDnsName": {
       "Value": { "Fn::GetAtt": [ "PcfElbTcp", "DNSName"]}
