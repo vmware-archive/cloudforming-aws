@@ -308,7 +308,7 @@
         "DBInstanceClass": "db.m4.large",
         "DBInstanceIdentifier": {"Fn::Join": ["",[ { "Ref": "EnvironmentID" }, "-rds" ] ] },
         "Engine": "MySQL",
-        "EngineVersion": "5.7.17",
+        "EngineVersion": "5.6.35",
         "MultiAZ": "True",
         "DBName": {"Ref": "RDSDBName"},
         "Iops": "1000",
