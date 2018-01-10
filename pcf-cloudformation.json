@@ -13,34 +13,34 @@
   "Mappings": {
     "NATRegionToAmiMap" : {
       "us-east-1" : {
-        "id" : "ami-303b1458"
+        "id" : "ami-01623d7b"
       },
       "us-east-2" : {
         "id" : "ami-021e3167"
       },
       "us-west-1" : {
-        "id" : "ami-7da94839"
+        "id" : "ami-004b0f60"
       },
       "us-west-2" : {
-        "id" : "ami-69ae8259"
+        "id" : "ami-030f4133"
       },
       "eu-west-1" : {
-        "id" : "ami-6975eb1e"
+        "id" : "ami-076d5d61"
       },
       "eu-central-1" : {
-        "id" : "ami-46073a5b"
+        "id" : "ami-0469bb6b"
       },
       "ap-southeast-1" : {
-        "id" : "ami-b49dace6"
+        "id" : "ami-018c3062"
       },
       "ap-northeast-1" : {
         "id" : "ami-03cf3903"
       },
       "ap-southeast-2" : {
-        "id" : "ami-e7ee9edd"
+        "id" : "ami-0154c73b"
       },
       "sa-east-1" : {
-        "id" : "ami-fbfa41e6"
+        "id" : "ami-2070134c"
       }
     }
   },
